@@ -1,0 +1,54 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  position: absolute;
+  height: 50px;
+  background-color: #282c34;
+  font-size: 18px;
+  color: white;
+  opacity: 80%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  text-align: center;
+  z-index: 1000; /* Higher z-index to be on top of the map */
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+
+.App-footer {
+  background-color: #282c34;
+  vertical-align: middle;
+  height: 50px;
+  font-size: 18px;
+  color: white;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  opacity: 80%;
+  padding: 10px;
+  position: absolute;
+  text-align: center;
+  z-index: 1000; /* Higher z-index to be on top of the map */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
