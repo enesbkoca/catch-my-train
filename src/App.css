@@ -25,7 +25,7 @@
   width: 100%;
   padding: 15px;
   text-align: center;
-  z-index: 1000; /* Higher z-index to be on top of the map */
+  z-index: 1000;
   box-sizing: border-box;
   vertical-align: middle;
 }
@@ -43,7 +43,7 @@
   padding: 10px;
   position: absolute;
   text-align: center;
-  z-index: 1000; /* Higher z-index to be on top of the map */
+  z-index: 1000;
 }
 
 html, body {
@@ -51,4 +51,54 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: hidden;
+}
+
+.user-inputs {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 8px;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 1000px;
+}
+
+.friend-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.user-inputs input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100px;
+}
+
+.remove-button {
+  background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-inputs button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.user-inputs button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

@@ -1,6 +1,7 @@
 import './App.css';
 import 'leaflet/dist/leaflet.css';
 import MapComponent from "./components/MapComponent";
+import FriendInputComponent from "./components/FriendInputComponent";
 
 function App() {
   return (
@@ -10,9 +11,12 @@ function App() {
       </header>
 
       <div className="Main-body">
-        <div className="MapComponent">
+          <div>
+              <FriendInputComponent></FriendInputComponent>
+          </div>
+          <div className="MapComponent">
             <MapComponent></MapComponent>
-        </div>
+          </div>
       </div>
 
       <footer className="App-footer">
