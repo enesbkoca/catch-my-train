@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
-import GetStations from "../data/StationList.js";
+import React, { useEffect, useState } from 'react';
+import GetStations from "../functions/StationList.js";
 
 const FriendInputComponent = () => {
     const [friends, setFriends] = useState([{
         name: '', station: '', earliest_time: '', latest_time: '', duration: ''
     }]);
+    const [stationOptions, setStationOptions] = useState([]);
 
-    const stationOptions = GetStations();
+    useEffect(() => {
+        const fetchStations = async () => {
+            try {
+                const stations = await GetStations();
+                setStationOptions(stations);
+            } catch (error) {
+                console.error("Error fetching stations:", error);
+            }
+        };
+
+        fetchStations();
+    }, []);
 
     // store the items in the input
     const inputConfig = [
