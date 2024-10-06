@@ -55,7 +55,7 @@ html, body {
 
 .user-inputs {
   position: absolute;
-  top: 10px;
+  top: 80px;
   left: 10px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 10px;
@@ -64,41 +64,69 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  max-width: 1000px;
+  width: 100%;
+  max-width: 500px;
 }
 
-.friend-row {
+.row {
   display: flex;
   gap: 10px;
   align-items: center;
+  justify-content: flex-end;
 }
 
-.user-inputs input {
-  padding: 5px;
+.user-inputs input, select {
+  width: 200px;
+  /*width: 25%;*/
+  padding: 10px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100px;
-}
-
-.remove-button {
-  background-color: transparent;
-  border: none;
-  color: red;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0;
+  border-radius: 5px;
 }
 
 .user-inputs button {
-  background-color: #007bff;
+  right: 10px;
   color: white;
   border: none;
   padding: 5px 10px;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
+
 }
 
 .user-inputs button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
+
+.add-button, .remove-button {
+  width: 10%;
+  aspect-ratio: 1.5;
+  font-size: 20px;
+}
+
+.add-button {
+  background-color: green;
+  margin-right: 0px;
+}
+
+.remove-button {
+  background-color: darkred;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.submit {
+  background-color: #007bff;
+  font-size: 20px;
+  font-weight: bold;
+  min-height: 40px
+}
+
+.meeting-options {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
