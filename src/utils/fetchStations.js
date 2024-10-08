@@ -12,13 +12,14 @@ const GetStations = async () => {
         skipEmptyLines: true
     });
 
-    let listStations = parsedData.data
-        .filter(station => station.country === 'NL')  // filter rows where country is 'NL'
-        .map(station => station.name_long.replace(/"/g, ''));  // remove quotes from 'name_long'
-
-    return listStations;
+    let stations = parsedData.data
+        .filter(station => station.country === 'NL')
+        .map(station => ({
+            name: station.name_long.replace(/"/g, ''),
+            coordinates: [parseFloat(station.geo_lat), parseFloat(station.geo_lng)]
+        }));
+    console.log(stations);
+    return stations;
 }
-
-console.log(GetStations());
 
 export default GetStations;

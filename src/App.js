@@ -1,28 +1,45 @@
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import 'leaflet/dist/leaflet.css';
 import MapComponent from "./components/MapComponent";
 import FriendInputComponent from "./components/FriendInputComponent";
+import { MapProvider } from './components/MapContext';
+import GetStations from './utils/fetchStations';
 
 function App() {
+    const [stations, setStations] = useState([])
+
+    useEffect(() => {
+        const fetchStations = async () => {
+            const stationsData = await GetStations();
+            setStations(stationsData);
+        };
+
+        fetchStations();
+    }, []);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        I will help you catch your train :)
-      </header>
+      <MapProvider>
+        <div className="App">
+          <header className="App-header">
+            I will help you catch your train :)
+          </header>
 
-      <div className="Main-body">
-          <div>
-              <FriendInputComponent></FriendInputComponent>
+          <div className="Main-body">
+              <div>
+                  <FriendInputComponent stations={stations}></FriendInputComponent>
+              </div>
+              <div className="MapComponent">
+                <MapComponent></MapComponent>
+              </div>
           </div>
-          <div className="MapComponent">
-            <MapComponent></MapComponent>
-          </div>
-      </div>
 
-      <footer className="App-footer">
-        <p>Made by Enes</p>
-      </footer>
-    </div>
+          <footer className="App-footer">
+            <p>Made by Enes</p>
+          </footer>
+        </div>
+      </MapProvider>
   );
 }
 
