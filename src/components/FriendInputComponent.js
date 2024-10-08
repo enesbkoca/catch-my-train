@@ -1,57 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import GetStations from "../functions/StationList.js";
+import React, {useState, useContext, useEffect} from 'react';
+import { MapContext } from './MapContext';
+import {getTodaysDate, getOneHourAheadTime} from "../utils/helperFunctions";
 
-const FriendInputComponent = () => {
+const FriendInputComponent = ({ stations }) => {
+    const { markers, addMarker, removeMarker, updateMarker } = useContext(MapContext);
     const [friends, setFriends] = useState([
-            {name: '', station: ''}, {name: '', station: ''}
-        ]
-    );
-    const [stationOptions, setStationOptions] = useState([]);
-
-    const getTodaysDate = () => {
-        const now = new Date();
-        return String(now.getDate()).padStart(2, '0');
-    }
-
-    const getOneHourAheadTime = () => {
-        const now = new Date();
-        now.setHours(now.getHours() + 1);
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-
-        return `${hours}:${minutes}`; // Format to HH:MM
-    };
-
+        { name: 'Jack', station: 'Amsterdam Centraal' },
+        { name: 'Samantha', station: 'Rotterdam Centraal' }
+    ]);
     const [meetingOptions, setMeetingOptions] = useState([{
         date: getTodaysDate(), meeting_time: getOneHourAheadTime(), duration: '03:00'}])
 
     useEffect(() => {
-        const fetchStations = async () => {
-            try {
-                const stations = await GetStations();
-                setStationOptions(stations);
-            } catch (error) {
-                console.error("Error fetching stations:", error);
+        friends.forEach((friend) => {
+            const station = stations.find(station => station.name === friend.station);
+            if (station) {
+                updateMarker({ position: station.coordinates });
+            } else {
+                console.log("Couldn't find station ", friend.station);
+                updateMarker({ position: [52.3676, 4.9041] })
             }
-        };
-
-        fetchStations();
-    }, []);
-
-    // store the items in the input
-    const inputConfig = [
-        { type: 'text', placeholder: 'Name', field: 'name' },
-        { type: 'select', placeholder: 'Starting Station', field: 'station', options: stationOptions},
-    ];
-
+        });
+    }, [friends, stations, updateMarker]);
 
 
     // func to handle adding new rows
     const addFriend = () => {
         if (friends.length < 5) {
-            setFriends([...friends, {
-                name: '', station: '',
-            }]);
+            setFriends([...friends, {name: '', station: ''}]);
+            addMarker({ position: [52.3676, 4.9041]});
         }
     };
 
@@ -59,13 +36,28 @@ const FriendInputComponent = () => {
     const removeFriend = (index) => {
         const newFriends = friends.filter((_, i) => i !== index);
         setFriends(newFriends);
+        removeMarker(index);
     };
 
     // func to handle input changes
-    const handleInputChange = (index, field, value) => {
+    const handleFriendChange = (index, field, value) => {
         const newFriends = [...friends];
         newFriends[index][field] = value;
         setFriends(newFriends);
+
+        // update marker if station was changes
+        if (field === 'station') {
+            const selectedStation = stations.find(station => station.name === value);
+            if (selectedStation) {
+                handleMarkerChange(index, selectedStation.coordinates);
+            }
+        }
+    };
+    const handleMarkerChange = (index, coordinates) => {
+        const newMarker = {
+            position: coordinates, // use the provided coordinates
+        };
+        updateMarker(index, newMarker);
     };
 
     const handleMeetingChange = (field, value) => {
@@ -74,35 +66,32 @@ const FriendInputComponent = () => {
         setMeetingOptions(newOptions);
     }
 
+
+
     return (
         <div className="user-inputs">
             {friends.map((friend, index) => (
                 <div key={index} className="row friend">
-                    {/* Dynamically generate inputs */}
-                    {inputConfig.map((input, inputIndex) => (
-                        input.type === 'select' ? (
-                            <select
-                                key={inputIndex}
-                                value={friend[input.field]}
-                                onChange={(e) => handleInputChange(index, input.field, e.target.value)}
-                            >
-                                <option value="">{input.placeholder}</option>
-                                {input.options.map((option, optIndex) => (
-                                    <option key={optIndex} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        ) : (
-                            <input
-                                key={inputIndex}
-                                type={input.type}
-                                placeholder={input.placeholder}
-                                value={friend[input.field]}
-                                onChange={(e) => handleInputChange(index, input.field, e.target.value)}
-                            />
-                        )
-                    ))}
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        value={friend.name}
+                        onChange={(e) => handleFriendChange(index, 'name', e.target.value)}
+                    />
+                    <select
+                        value={friend.station}
+                        onChange={(e) => {
+                            handleFriendChange(index, 'station', e.target.value);
+                            handleMarkerChange();
+                        }}
+                    >
+                        <option value="">Starting Station</option>
+                        {stations.map((station, optIndex) => (
+                            <option key={optIndex} value={station.name}>
+                                {station.name}
+                            </option>
+                        ))}
+                    </select>
 
                     <button className="remove-button" onClick={() => removeFriend(index)} disabled={friends.length < 3}>
                         &ndash;
@@ -138,6 +127,5 @@ const FriendInputComponent = () => {
         </div>
     );
 };
-
 
 export default FriendInputComponent;
