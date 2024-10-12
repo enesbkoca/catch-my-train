@@ -22,11 +22,11 @@ function App() {
   return (
       <MapProvider>
         <div className="App">
-          <header className="App-header">
+          <header className="header">
             I will help you catch your train :)
           </header>
 
-          <div className="Main-body">
+          <div className="mainbody">
               <div>
                   <FriendInputComponent stations={stations}></FriendInputComponent>
               </div>
@@ -35,7 +35,7 @@ function App() {
               </div>
           </div>
 
-          <footer className="App-footer">
+          <footer className="footer">
             <p>Made by Enes</p>
           </footer>
         </div>

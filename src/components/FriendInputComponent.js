@@ -6,22 +6,26 @@ const FriendInputComponent = ({ stations }) => {
     const { markers, addMarker, removeMarker, updateMarker } = useContext(MapContext);
     const [friends, setFriends] = useState([
         { name: 'Jack', station: 'Amsterdam Centraal' },
-        { name: 'Samantha', station: 'Rotterdam Centraal' }
+        { name: '', station: '' }
     ]);
     const [meetingOptions, setMeetingOptions] = useState([{
         date: getTodaysDate(), meeting_time: getOneHourAheadTime(), duration: '03:00'}])
 
     useEffect(() => {
-        friends.forEach((friend) => {
-            const station = stations.find(station => station.name === friend.station);
-            if (station) {
-                updateMarker({ position: station.coordinates });
-            } else {
-                console.log("Couldn't find station ", friend.station);
-                updateMarker({ position: [52.3676, 4.9041] })
-            }
-        });
-    }, [friends, stations, updateMarker]);
+        const updateMarkers = () => {
+            friends.forEach((friend, index) => {
+                const station = stations.find(station => station.name === friend.station);
+                const newMarker = station ? station.coordinates : [52.3676, 4.9041];
+
+                // Only update if the coordinates are different
+                if (markers[index]?.position.toString() !== newMarker.toString()) {
+                    updateMarker(index, { position: newMarker });
+                }
+            });
+        };
+
+        updateMarkers();
+    }, [friends, stations, markers, updateMarker]);
 
 
     // func to handle adding new rows
@@ -71,14 +75,16 @@ const FriendInputComponent = ({ stations }) => {
     return (
         <div className="user-inputs">
             {friends.map((friend, index) => (
-                <div key={index} className="row friend">
+                <div key={index} className="row">
                     <input
+                        id="friend-name"
                         type="text"
                         placeholder="Name"
                         value={friend.name}
                         onChange={(e) => handleFriendChange(index, 'name', e.target.value)}
                     />
                     <select
+                        id="starting-station"
                         value={friend.station}
                         onChange={(e) => {
                             handleFriendChange(index, 'station', e.target.value);
@@ -92,40 +98,51 @@ const FriendInputComponent = ({ stations }) => {
                             </option>
                         ))}
                     </select>
-
-                    <button className="remove-button" onClick={() => removeFriend(index)} disabled={friends.length < 3}>
+                    <button className="remove-button" onClick={() => removeFriend(index)}
+                            disabled={friends.length < 3}>
                         &ndash;
                     </button>
                 </div>
             ))}
 
-            <div className="row meeting-options">
-                <input
-                    type="date"
-                    value={meetingOptions.date}
-                    onChange={(e) => handleMeetingChange(meetingOptions["date"], e.target.value)}
-                />
-                <input
-                    type="time"
-                    value={meetingOptions.meeting_time}
-                    onChange={(e) => handleMeetingChange(meetingOptions["time"], e.target.value)}
-                />
-                <input
-                    type="time"
-                    value={meetingOptions.duration}
-                    onChange={(e) => handleMeetingChange(meetingOptions["duration"], e.target.value)}
-                />
-                <button className="add-button" onClick={addFriend} disabled={friends.length >= 5}>
-                    +
-                </button>
-            </div>
+                <div className="row">
+                    <div className="input-group">
+                        <label htmlFor="meeting-date">Date</label>
+                        <input
+                            type="date"
+                            value={meetingOptions.date}
+                            onChange={(e) => handleMeetingChange(meetingOptions["date"], e.target.value)}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="meeting-time">Time</label>
+                        <input
+                            type="time"
+                            value={meetingOptions.meeting_time}
+                            onChange={(e) => handleMeetingChange(meetingOptions["time"], e.target.value)}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label htmlFor="meeting-duration">Duration</label>
+                        <input
+                            type="time"
+                            value={meetingOptions.duration}
+                            onChange={(e) => handleMeetingChange(meetingOptions["duration"], e.target.value)}
+                        />
+                    </div>
+                    <button className="add-button" onClick={addFriend} disabled={friends.length >= 5}>
+                        +
+                    </button>
+                </div>
 
-            <button className="submit">
-                Find the perfect train
-            </button>
+                <div className="row">
+                    <button className="submit-button">
+                        Find the perfect train
+                    </button>
+                </div>
 
         </div>
-    );
-};
+            );
+            };
 
-export default FriendInputComponent;
+            export default FriendInputComponent;
