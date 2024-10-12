@@ -105,7 +105,7 @@ const FriendInputComponent = ({ stations }) => {
                 </div>
             ))}
 
-            <div className="row row-labels">
+            <div className="row label-row">
                 <div>
                     <label htmlFor="meeting-date">Date</label>
                 </div>
