@@ -52,9 +52,12 @@ html, body {
   margin-top: 10px;
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
+.row-labels {
+  justify-content: space-evenly;
+}
+
+.meeting-options {
+  margin-top: -10px;
 }
 
 .row input, select {
@@ -76,7 +79,7 @@ html, body {
 }
 
 .row label {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 
 .row button:disabled {
@@ -96,7 +99,6 @@ html, body {
 
 .add-button {
   background-color: green;
-  margin-top: 20px;
 }
 
 .remove-button {

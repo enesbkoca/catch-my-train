@@ -105,41 +105,41 @@ const FriendInputComponent = ({ stations }) => {
                 </div>
             ))}
 
-                <div className="row">
-                    <div className="input-group">
-                        <label htmlFor="meeting-date">Date</label>
-                        <input
-                            type="date"
-                            value={meetingOptions.date}
-                            onChange={(e) => handleMeetingChange(meetingOptions["date"], e.target.value)}
-                        />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="meeting-time">Time</label>
-                        <input
-                            type="time"
-                            value={meetingOptions.meeting_time}
-                            onChange={(e) => handleMeetingChange(meetingOptions["time"], e.target.value)}
-                        />
-                    </div>
-                    <div className="input-group">
-                        <label htmlFor="meeting-duration">Duration</label>
-                        <input
-                            type="time"
-                            value={meetingOptions.duration}
-                            onChange={(e) => handleMeetingChange(meetingOptions["duration"], e.target.value)}
-                        />
-                    </div>
-                    <button className="add-button" onClick={addFriend} disabled={friends.length >= 5}>
-                        +
-                    </button>
+            <div className="row row-labels">
+                <div>
+                    <label htmlFor="meeting-date">Date</label>
                 </div>
+                <div>
+                    <label htmlFor="meeting-time">Time</label>
+                </div>
+                <div>
+                    <label htmlFor="meeting-duration">Duration</label>
+                </div>
+            </div>
 
-                <div className="row">
-                    <button className="submit-button">
-                        Find the perfect train
-                    </button>
-                </div>
+            <div className="row meeting-options">
+                <input
+                    type="date"
+                    id="meeting-date"
+                    value={meetingOptions.date}
+                    onChange={(e) => handleMeetingChange(meetingOptions["date"], e.target.value)}
+                />
+                <input
+                    type="time"
+                    id="meeting-time"
+                    value={meetingOptions.meeting_time}
+                    onChange={(e) => handleMeetingChange(meetingOptions["time"], e.target.value)}
+                />
+                <input
+                    type="time"
+                    id="meeting-duration"
+                    value={meetingOptions.duration}
+                    onChange={(e) => handleMeetingChange(meetingOptions["duration"], e.target.value)}
+                />
+                <button className="add-button" onClick={addFriend} disabled={friends.length >= 5}>
+                    +
+                </button>
+            </div>
 
         </div>
             );
