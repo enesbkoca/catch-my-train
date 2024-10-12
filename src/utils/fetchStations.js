@@ -18,7 +18,7 @@ const GetStations = async () => {
             name: station.name_long.replace(/"/g, ''),
             coordinates: [parseFloat(station.geo_lat), parseFloat(station.geo_lng)]
         }));
-    console.log(stations);
+
     return stations;
 }
 

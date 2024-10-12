@@ -29,7 +29,6 @@ const FriendInputComponent = ({ stations }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [friends, markers, updateMarker]);
 
-    console.log(meetingOptions);
     return (
         <div className="user-inputs">
             {friends.map((friend, index) => (
