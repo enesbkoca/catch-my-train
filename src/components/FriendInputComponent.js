@@ -141,8 +141,14 @@ const FriendInputComponent = ({ stations }) => {
                 </button>
             </div>
 
-        </div>
-            );
-            };
+            <div className={"row"}>
+                <button className={"submit-button"}>
+                    Plan the perfect journey
+                </button>
+            </div>
 
-            export default FriendInputComponent;
+        </div>
+);
+};
+
+export default FriendInputComponent;
