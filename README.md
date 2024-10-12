@@ -7,3 +7,11 @@ With **Catch the Train**, you simply input your friends' starting locations and 
 Let the magic of seamless coordination make your next get-together a breeze!
 
 Try it out here: [Catch the Train Demo](https://catch-my-train.vercel.app/)
+
+# To-do
+ 
+- [ ] Add homepage that you can use to start planning your first journey
+- [ ] Add planner page to plan journeys
+- [ ] Add journey page to display created journey
+- [ ] Add mock result to compute journey 
+- [ ] Add logic to call NS API to compute best journey
