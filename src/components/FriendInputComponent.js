@@ -1,6 +1,16 @@
 import React, {useState, useContext, useEffect} from 'react';
 import { MapContext } from './MapContext';
-import {getTodaysDate, getOneHourAheadTime} from "../utils/helperFunctions";
+import {
+    getTodaysDate,
+    getOneHourAheadTime,
+    updateMarkers,
+    handleFriendChange,
+    renderStationOptions,
+    removeFriend,
+    addFriend,
+    handleSubmit,
+    handleMeetingChange
+} from "../utils/helperFunctions";
 
 const FriendInputComponent = ({ stations }) => {
     const { markers, addMarker, removeMarker, updateMarker } = useContext(MapContext);
@@ -8,70 +18,18 @@ const FriendInputComponent = ({ stations }) => {
         { name: 'Jack', station: 'Amsterdam Centraal' },
         { name: '', station: '' }
     ]);
-    const [meetingOptions, setMeetingOptions] = useState([{
-        date: getTodaysDate(), meeting_time: getOneHourAheadTime(), duration: '03:00'}])
+    const [meetingOptions, setMeetingOptions] = useState({
+        meeting_date: getTodaysDate(),
+        meeting_time: getOneHourAheadTime(),
+        duration: '03:00'
+    });
 
     useEffect(() => {
-        const updateMarkers = () => {
-            friends.forEach((friend, index) => {
-                const station = stations.find(station => station.name === friend.station);
-                const newMarker = station ? station.coordinates : [52.3676, 4.9041];
+        updateMarkers(friends, stations, markers, updateMarker);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [friends, markers, updateMarker]);
 
-                // Only update if the coordinates are different
-                if (markers[index]?.position.toString() !== newMarker.toString()) {
-                    updateMarker(index, { position: newMarker });
-                }
-            });
-        };
-
-        updateMarkers();
-    }, [friends, stations, markers, updateMarker]);
-
-
-    // func to handle adding new rows
-    const addFriend = () => {
-        if (friends.length < 5) {
-            setFriends([...friends, {name: '', station: ''}]);
-            addMarker({ position: [52.3676, 4.9041]});
-        }
-    };
-
-    // func to remove row
-    const removeFriend = (index) => {
-        const newFriends = friends.filter((_, i) => i !== index);
-        setFriends(newFriends);
-        removeMarker(index);
-    };
-
-    // func to handle input changes
-    const handleFriendChange = (index, field, value) => {
-        const newFriends = [...friends];
-        newFriends[index][field] = value;
-        setFriends(newFriends);
-
-        // update marker if station was changes
-        if (field === 'station') {
-            const selectedStation = stations.find(station => station.name === value);
-            if (selectedStation) {
-                handleMarkerChange(index, selectedStation.coordinates);
-            }
-        }
-    };
-    const handleMarkerChange = (index, coordinates) => {
-        const newMarker = {
-            position: coordinates, // use the provided coordinates
-        };
-        updateMarker(index, newMarker);
-    };
-
-    const handleMeetingChange = (field, value) => {
-        const newOptions = [...meetingOptions];
-        newOptions[field] = value;
-        setMeetingOptions(newOptions);
-    }
-
-
-
+    console.log(meetingOptions);
     return (
         <div className="user-inputs">
             {friends.map((friend, index) => (
@@ -81,24 +39,19 @@ const FriendInputComponent = ({ stations }) => {
                         type="text"
                         placeholder="Name"
                         value={friend.name}
-                        onChange={(e) => handleFriendChange(index, 'name', e.target.value)}
+                        onChange={(e) => handleFriendChange(index, 'name', e.target.value, friends, setFriends, stations, updateMarker)}
                     />
                     <select
                         id="starting-station"
                         value={friend.station}
                         onChange={(e) => {
-                            handleFriendChange(index, 'station', e.target.value);
-                            handleMarkerChange();
+                            handleFriendChange(index, 'station', e.target.value, friends, setFriends, stations, updateMarker);
                         }}
                     >
                         <option value="">Starting Station</option>
-                        {stations.map((station, optIndex) => (
-                            <option key={optIndex} value={station.name}>
-                                {station.name}
-                            </option>
-                        ))}
+                        {renderStationOptions(stations)}
                     </select>
-                    <button className="remove-button" onClick={() => removeFriend(index)}
+                    <button className="remove-button" onClick={() => removeFriend(index, friends, setFriends, removeMarker)}
                             disabled={friends.length < 3}>
                         &ndash;
                     </button>
@@ -121,34 +74,33 @@ const FriendInputComponent = ({ stations }) => {
                 <input
                     type="date"
                     id="meeting-date"
-                    value={meetingOptions.date}
-                    onChange={(e) => handleMeetingChange(meetingOptions["date"], e.target.value)}
+                    value={meetingOptions.meeting_date}
+                    onChange={(e) => handleMeetingChange("meeting_date", e.target.value, meetingOptions, setMeetingOptions)}
                 />
                 <input
                     type="time"
                     id="meeting-time"
                     value={meetingOptions.meeting_time}
-                    onChange={(e) => handleMeetingChange(meetingOptions["time"], e.target.value)}
+                    onChange={(e) => handleMeetingChange("meeting_time", e.target.value, meetingOptions, setMeetingOptions)}
                 />
                 <input
                     type="time"
                     id="meeting-duration"
                     value={meetingOptions.duration}
-                    onChange={(e) => handleMeetingChange(meetingOptions["duration"], e.target.value)}
+                    onChange={(e) => handleMeetingChange("duration", e.target.value, meetingOptions, setMeetingOptions)}
                 />
-                <button className="add-button" onClick={addFriend} disabled={friends.length >= 5}>
+                <button className="add-button" onClick={() => addFriend(friends, setFriends, addMarker)} disabled={friends.length >= 5}>
                     +
                 </button>
             </div>
 
             <div className={"row"}>
-                <button className={"submit-button"}>
+                <button className={"submit-button"} onClick={() => handleSubmit(friends, meetingOptions)}>
                     Plan the perfect journey
                 </button>
             </div>
-
         </div>
-);
+    );
 };
 
 export default FriendInputComponent;
