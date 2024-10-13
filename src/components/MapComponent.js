@@ -18,7 +18,7 @@ const MapComponent = () => {
     const { markers } = useContext(MapContext);
 
     return (
-        <MapContainer center={coordinatesNetherlands} zoom={8} style={{ height: '100vh', width: '100%' }} zoomControl={false}>
+        <MapContainer center={coordinatesNetherlands} zoom={8} className={"map-container"} zoomControl={false}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

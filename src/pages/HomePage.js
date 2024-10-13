@@ -26,7 +26,7 @@ const HomePage = () => {
                     backgroundColor="rgba(0, 0, 0, 0.4)"
                     color="white"
                     padding="20px"
-                    zIndex={2000}
+                    zIndex={100}
                 >
                     <VStack spacing={6} textAlign="center">
 
