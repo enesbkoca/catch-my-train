@@ -15,17 +15,51 @@ html, body {
   background-color: #282c34;
   color: white;
   font-size: 16px;
-  padding: 10px;
+  padding: 5px;
   z-index: 1000;
+  display: flex;
   text-align: center;
+  align-items: center;
 }
 
 .header {
   top: 0;
+  justify-content: center;
 }
 
 .footer {
   bottom: 0;
+  justify-content: space-between;
+}
+
+.footer p {
+  margin: 0 30px;
+}
+
+.footer p:first-child {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.nav-list {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 3px;
+}
+
+.nav-link {
+  margin: 0 5rem;
+  text-decoration: none;
+  color: #f0f0f0;
+  font-size: 1.2rem;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
 }
 
 .user-inputs {
@@ -67,6 +101,10 @@ html, body {
   border-radius: 5px;
 }
 
+.row label {
+  margin-bottom: 2px;
+}
+
 .row button {
   width: 10%;
   min-width: 50px;
@@ -75,10 +113,6 @@ html, body {
   padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
-}
-
-.row label {
-  margin-bottom: 2px;
 }
 
 .row button:disabled {
@@ -111,10 +145,25 @@ html, body {
   font-weight: bold;
 }
 
+@media (max-width: 768px) {
+  /* Smaller margin between header links */
+  .nav-link {
+    margin: 0 1rem;
+    font-size: 1rem;
+  }
 
-@media (min-width: 768px) {
+  /* Stack the footer items on top of each other */
+  .footer {
+    flex-direction: column;
+    align-items: center;
+  }
 
-  .add-button, .remove-button {
-    width: 20%;
+  .footer p {
+    margin: 5px 0;
+    font-size: 13px;
+  }
+
+  .footer p:first-child {
+    margin-bottom: 0;
   }
 }
