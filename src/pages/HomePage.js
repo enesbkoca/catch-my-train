@@ -29,37 +29,42 @@ const HomePage = () => {
                     zIndex={2000}
                 >
                     <VStack spacing={6} textAlign="center">
-                        <Heading as="h1" size={useBreakpointValue({ base: "xl", md: "3xl" })} mb="4">
+                        <Heading as="h1" size={useBreakpointValue({ base: "xl", md: "4xl" })} mb="2">
                             Catch My Train
                         </Heading>
 
-
                         {/* Text Boxes Side by Side */}
-                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={8} width="100%">
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} mt={2} width="100%">
                             <Box p={4} borderRadius="md" backgroundColor="blue.600" color="white" boxShadow="md">
-                                <Text fontSize="sm">
-                                    Are you looking to meet up with friends who live far away, but struggling to find the perfect meeting spot or the optimal time? Coordinating schedules and locations can be a hassle, but <strong>Catch the Train</strong> is here to simplify the process!
+                                <Text fontSize="md">
+                                    Are you looking to meet up with friends who live far away, but struggling to find the perfect meeting spot or the optimal time? Coordinating schedules and locations can be a hassle, but <strong>Catch my Train</strong> is here to simplify the process!
                                 </Text>
                             </Box>
                             <Box p={4} borderRadius="md" backgroundColor="green.600" color="white" boxShadow="md">
-                                <Text fontSize="sm">
-                                    With <strong>Catch the Train</strong>, you simply input your friends' starting locations and their preferred departure or arrival times. Our app will take care of the rest, helping you find the ideal meeting point and timing for everyone involved.
+                                <Text fontSize="md">
+                                    With <strong>Catch my Train</strong>, you simply input your friends' starting locations and their preferred departure or arrival times. Our app will take care of the rest, helping you find the ideal meeting point and timing for everyone involved.
                                 </Text>
                             </Box>
                         </SimpleGrid>
 
-                        <Text fontSize={useBreakpointValue({ base: "md", md: "lg" })} mb="6">
-                            Let the magic of seamless coordination make your next get-together a breeze!
-                        </Text>
+
+
+
                         <Button
                             colorScheme="teal"
                             size="lg"
                             variant="solid"
                             boxShadow="lg"
+                            fontSize="3xl"
+                            mt={350}
                             onClick={() => { window.location.href = '/planner'; }}
                         >
                             Start Planning Your Journey
                         </Button>
+
+                        <Text fontSize={useBreakpointValue({ base: "md", md: "xl" })} mb="6" mt={4}>
+                            Let the magic of seamless coordination make your next get-together a breeze!
+                        </Text>
                     </VStack>
 
                 </Box>
