@@ -30,7 +30,7 @@ const FriendInputComponent = ({ stations }) => {
     }, [friends, markers, updateMarker]);
 
     return (
-        <div className="user-inputs">
+        <div className="friend-input">
             {friends.map((friend, index) => (
                 <div key={index} className="row">
                     <input
