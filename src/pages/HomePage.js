@@ -57,12 +57,18 @@ const HomePage = () => {
                             boxShadow="lg"
                             fontSize="3xl"
                             mt={350}
+                            mb={0}
                             onClick={() => { window.location.href = '/planner'; }}
                         >
                             Start Planning Your Journey
                         </Button>
 
-                        <Text fontSize={useBreakpointValue({ base: "md", md: "xl" })} mb="6" mt={4}>
+                        <Text
+                            fontSize={useBreakpointValue({ base: "md", md: "xl" })}
+                            mb="6"
+                            mt={0}
+                            textShadow="1px 1px 2px rgba(0, 0, 0, 0.7)" // Adds a subtle shadow to the text
+                        >
                             Let the magic of seamless coordination make your next get-together a breeze!
                         </Text>
                     </VStack>
