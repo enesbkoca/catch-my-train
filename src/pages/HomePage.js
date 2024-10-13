@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, VStack, Heading, Text, Button, useBreakpointValue, SimpleGrid } from '@chakra-ui/react'; // Import necessary components
+import { Box, VStack, Heading, Text, Button, useBreakpointValue, SimpleGrid } from '@chakra-ui/react';
 import MapComponent from "../components/MapComponent";
 import { MapProvider } from "../components/MapContext";
 
@@ -28,21 +28,32 @@ const HomePage = () => {
                     padding={useBreakpointValue({ base: "10px", md: "20px" })}
                     zIndex={100}
                 >
-                    <VStack spacing={useBreakpointValue({ base: 4, md: 6 })} textAlign="center" width="100%" maxWidth="1200px">
+                    <VStack
+                        spacing={useBreakpointValue({ base: 2, md: 6 })}
+                        textAlign="center"
+                        width="100%"
+                        maxWidth="1200px"
+                        height="100%"  // Ensure it fits in the viewport
+                        justifyContent="center"  // Center content vertically
+                    >
                         {/* Title of the page */}
-                        <Heading as="h1" size={useBreakpointValue({ base: "2xl", md: "4xl" })} mb={2}>
+                        <Heading as="h1" size={useBreakpointValue({ base: "xl", md: "4xl" })} mb={2}>
                             Catch My Train
                         </Heading>
 
                         {/* Side-by-side text boxes describing the App */}
-                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={useBreakpointValue({ base: 4, md: 8 })} width="100%">
+                        <SimpleGrid
+                            columns={{ base: 1, md: 2 }}
+                            spacing={useBreakpointValue({ base: 2, md: 8 })}
+                            width="100%"
+                        >
                             <Box p={4} borderRadius="md" backgroundColor="blue.600" color="white" boxShadow="md">
-                                <Text fontSize={useBreakpointValue({ base: "sm", md: "md" })}>
+                                <Text fontSize={useBreakpointValue({ base: "xs", md: "md" })}>
                                     Are you looking to meet up with friends who live far away, but struggling to find the perfect meeting spot or the optimal time? Coordinating schedules and locations can be a hassle, but <strong>Catch My Train</strong> is here to simplify the process!
                                 </Text>
                             </Box>
                             <Box p={4} borderRadius="md" backgroundColor="green.600" color="white" boxShadow="md">
-                                <Text fontSize={useBreakpointValue({ base: "sm", md: "md" })}>
+                                <Text fontSize={useBreakpointValue({ base: "xs", md: "md" })}>
                                     With <strong>Catch My Train</strong>, you simply input your friends' starting locations and their preferred departure or arrival times. Our app will take care of the rest, helping you find the ideal meeting point and timing for everyone involved.
                                 </Text>
                             </Box>
@@ -51,10 +62,9 @@ const HomePage = () => {
                         {/* Redirect button to start Planning journey */}
                         <Button
                             colorScheme="teal"
-                            size={useBreakpointValue({ base: "md", md: "lg" })}
+                            size={useBreakpointValue({ base: "sm", md: "lg" })}
                             fontSize={useBreakpointValue({ base: "lg", md: "2xl" })}
                             boxShadow="lg"
-                            mt={useBreakpointValue({ base: 8, md: 12 })}
                             onClick={() => { window.location.href = '/planner'; }}
                         >
                             Start Planning Your Journey
@@ -62,8 +72,7 @@ const HomePage = () => {
 
                         {/* Some text below the start button */}
                         <Text
-                            fontSize={useBreakpointValue({ base: "sm", md: "xl" })}
-                            mt={useBreakpointValue({ base: 4, md: 8 })}
+                            fontSize={useBreakpointValue({ base: "xs", md: "lg" })}
                             textShadow="1px 1px 2px rgba(0, 0, 0, 0.7)"
                         >
                             Let the magic of seamless coordination make your next get-together a breeze!
