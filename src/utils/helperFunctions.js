@@ -77,11 +77,11 @@ export const handleMeetingChange = (field, value, prevOptions, setMeetingOptions
     }));
 }
 
-export const handleSubmit = (friends, meetingOptions) => {
-    computeJourney(friends, meetingOptions);
+export const handleSubmit = (friends, meetingOptions, navigate) => {
+    const journeyResults = computeJourney(friends, meetingOptions);
 
-    // navigate('/journey')
-}
+    navigate('/journey', { state: { journeyResults } });
+};
 
 export const updateMarkers = (friends, stations, markers, updateMarker) => {
     friends.forEach((friend, index) => {

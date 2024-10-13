@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapContext } from './MapContext';
 import {
     getTodaysDate,
@@ -13,6 +14,7 @@ import {
 } from "../utils/helperFunctions";
 
 const FriendInputComponent = ({ stations }) => {
+    const navigate = useNavigate();
     const { markers, addMarker, removeMarker, updateMarker } = useContext(MapContext);
     const [friends, setFriends] = useState([
         { name: 'Jack', station: 'Amsterdam Centraal' },
@@ -94,7 +96,7 @@ const FriendInputComponent = ({ stations }) => {
             </div>
 
             <div className={"row"}>
-                <button className={"submit-button"} onClick={() => handleSubmit(friends, meetingOptions)}>
+                <button className={"submit-button"} onClick={() => handleSubmit(friends, meetingOptions, navigate)}>
                     Plan the perfect journey
                 </button>
             </div>
