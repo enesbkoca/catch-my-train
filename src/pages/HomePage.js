@@ -23,17 +23,19 @@ const HomePage = () => {
                     alignItems="center"
                     justifyContent="center"
                     flexDirection="column"
-                    backgroundColor="rgba(0, 0, 0, 0.4)" // Semi-transparent overlay for the background
+                    backgroundColor="rgba(0, 0, 0, 0.4)"
                     color="white"
                     padding="20px"
                     zIndex={2000}
                 >
                     <VStack spacing={6} textAlign="center">
+
+                        {/* Title of the page */}
                         <Heading as="h1" size={useBreakpointValue({ base: "xl", md: "4xl" })} mb="2">
                             Catch My Train
                         </Heading>
 
-                        {/* Text Boxes Side by Side */}
+                        {/* Side-by-side text boxes describing the App */}
                         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8} mt={2} width="100%">
                             <Box p={4} borderRadius="md" backgroundColor="blue.600" color="white" boxShadow="md">
                                 <Text fontSize="md">
@@ -47,9 +49,7 @@ const HomePage = () => {
                             </Box>
                         </SimpleGrid>
 
-
-
-
+                        {/* Redirect button to start Planning journey */}
                         <Button
                             colorScheme="teal"
                             size="lg"
@@ -63,6 +63,7 @@ const HomePage = () => {
                             Start Planning Your Journey
                         </Button>
 
+                        {/* Some text below the start button */}
                         <Text
                             fontSize={useBreakpointValue({ base: "md", md: "xl" })}
                             mb="6"
