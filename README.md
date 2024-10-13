@@ -10,8 +10,8 @@ Try it out here: [Catch the Train Demo](https://catch-my-train.vercel.app/)
 
 # To-do
  
-- [ ] Add homepage that you can use to start planning your first journey
-- [ ] Add planner page to plan journeys
+- [X] Add homepage that you can use to start planning your first journey
+- [X] Add planner page to plan journeys
 - [ ] Add journey page to display created journey
 - [ ] Add mock result to compute journey 
 - [ ] Add logic to call NS API to compute best journey
