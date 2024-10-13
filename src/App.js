@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+import './styles/App.css';
 import 'leaflet/dist/leaflet.css';
 import MapComponent from "./components/MapComponent";
 import FriendInputComponent from "./components/FriendInputComponent";
