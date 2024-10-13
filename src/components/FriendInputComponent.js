@@ -15,7 +15,7 @@ import {
 const FriendInputComponent = ({ stations }) => {
     const { markers, addMarker, removeMarker, updateMarker } = useContext(MapContext);
     const [friends, setFriends] = useState([
-        { name: 'Jack', station: 'Amsterdam Centraal' },
+        { name: 'Jack', station: 'Utrecht Centraal' },
         { name: '', station: '' }
     ]);
     const [meetingOptions, setMeetingOptions] = useState({
