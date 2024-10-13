@@ -32,8 +32,24 @@ const HomePage = () => {
                         <Heading as="h1" size={useBreakpointValue({ base: "xl", md: "3xl" })} mb="4">
                             Catch My Train
                         </Heading>
+
+
+                        {/* Text Boxes Side by Side */}
+                        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={8} width="100%">
+                            <Box p={4} borderRadius="md" backgroundColor="blue.600" color="white" boxShadow="md">
+                                <Text fontSize="sm">
+                                    Are you looking to meet up with friends who live far away, but struggling to find the perfect meeting spot or the optimal time? Coordinating schedules and locations can be a hassle, but <strong>Catch the Train</strong> is here to simplify the process!
+                                </Text>
+                            </Box>
+                            <Box p={4} borderRadius="md" backgroundColor="green.600" color="white" boxShadow="md">
+                                <Text fontSize="sm">
+                                    With <strong>Catch the Train</strong>, you simply input your friends' starting locations and their preferred departure or arrival times. Our app will take care of the rest, helping you find the ideal meeting point and timing for everyone involved.
+                                </Text>
+                            </Box>
+                        </SimpleGrid>
+
                         <Text fontSize={useBreakpointValue({ base: "md", md: "lg" })} mb="6">
-                            Helping people catch their trains one journey at a time! 🚄
+                            Let the magic of seamless coordination make your next get-together a breeze!
                         </Text>
                         <Button
                             colorScheme="teal"
@@ -46,24 +62,6 @@ const HomePage = () => {
                         </Button>
                     </VStack>
 
-                    {/* Text Boxes Side by Side */}
-                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} mt={8} width="100%">
-                        <Box p={4} borderRadius="md" backgroundColor="blue.600" color="white" boxShadow="md">
-                            <Text fontSize="sm">
-                                Are you looking to meet up with friends who live far away, but struggling to find the perfect meeting spot or the optimal time? Coordinating schedules and locations can be a hassle, but <strong>Catch the Train</strong> is here to simplify the process!
-                            </Text>
-                        </Box>
-                        <Box p={4} borderRadius="md" backgroundColor="green.600" color="white" boxShadow="md">
-                            <Text fontSize="sm">
-                                With <strong>Catch the Train</strong>, you simply input your friends' starting locations and their preferred departure or arrival times. Our app will take care of the rest, helping you find the ideal meeting point and timing for everyone involved.
-                            </Text>
-                        </Box>
-                        <Box p={4} borderRadius="md" backgroundColor="purple.600" color="white" boxShadow="md">
-                            <Text fontSize="sm">
-                                Let the magic of seamless coordination make your next get-together a breeze!
-                            </Text>
-                        </Box>
-                    </SimpleGrid>
                 </Box>
             </Box>
         </div>
