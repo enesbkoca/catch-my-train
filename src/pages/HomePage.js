@@ -64,7 +64,7 @@ const HomePage = () => {
                         <Text
                             fontSize={useBreakpointValue({ base: "sm", md: "xl" })}
                             mt={useBreakpointValue({ base: 4, md: 8 })}
-                            textShadow="1px 1px 2px rgba(0, 0, 0, 0.7)" // Adds a subtle shadow to the text
+                            textShadow="1px 1px 2px rgba(0, 0, 0, 0.7)"
                         >
                             Let the magic of seamless coordination make your next get-together a breeze!
                         </Text>

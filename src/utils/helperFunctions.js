@@ -1,6 +1,20 @@
 import computeJourney from "./computeJourney";
 import React from "react";
 import {coordinatesNetherlands} from "../assets/constants";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// func to create a custom marker icon based on color
+export const createCustomIcon = (color) => {
+    return L.icon({
+        iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
+        shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+        iconSize: [25, 41], // size of the icon
+        iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+        popupAnchor: [1, -34], // point from which the popup should open relative to the iconAnchor
+        shadowSize: [41, 41] // size of the shadow
+    });
+};
 
 export const getTodaysDate = () => {
     const now = new Date();
