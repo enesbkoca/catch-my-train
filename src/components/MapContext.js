@@ -1,10 +1,11 @@
 import React, { createContext, useState } from 'react';
+import {coordinatesNetherlands} from "../assets/constants";
 
 export const MapContext = createContext();
 export const MapProvider = ({ children }) => {
     const [markers, setMarkers] = useState([
-        { position: [52.379189, 4.899431] },
-        { position: [51.9225, 4.47917] }
+        { position: coordinatesNetherlands },
+        { position: coordinatesNetherlands }
     ]);
 
     const addMarker = (marker) => {

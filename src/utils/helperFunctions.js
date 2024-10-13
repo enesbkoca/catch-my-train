@@ -1,5 +1,6 @@
 import computeJourney from "./computeJourney";
 import React from "react";
+import {coordinatesNetherlands} from "../assets/constants";
 
 export const getTodaysDate = () => {
     const now = new Date();
@@ -22,7 +23,7 @@ export const getOneHourAheadTime = () => {
 // func to handle adding new rows
 export const addFriend = (prevFriends, setFriends, addMarker) => {
     setFriends(prevFriends => [...prevFriends, {name: '', station: ''}]);
-    addMarker({ position: [52.3676, 4.9041] });
+    addMarker({ position: coordinatesNetherlands });
 };
 
 // func to remove row
@@ -71,7 +72,7 @@ export const handleSubmit = (friends, meetingOptions) => {
 export const updateMarkers = (friends, stations, markers, updateMarker) => {
     friends.forEach((friend, index) => {
         const station = stations.find(station => station.name === friend.station);
-        const newMarker = station ? station.coordinates : [52.3676, 4.9041];
+        const newMarker = station ? station.coordinates : coordinatesNetherlands;
 
         // Only update if the coordinates are different
         if (markers[index]?.position.toString() !== newMarker.toString()) {
