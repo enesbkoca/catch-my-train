@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { MapContext } from './MapContext';
-import { Box, Text, VStack} from '@chakra-ui/react';
+import { Box, Text, VStack, HStack, Divider} from '@chakra-ui/react';
 
 const JourneyResultComponent = ({ journeyResult }) => {
     // const { markers, addMarker, removeMarker } = useContext(MapContext);
@@ -38,8 +38,12 @@ const JourneyResultComponent = ({ journeyResult }) => {
                                     Train Ride {rideIndex + 1}
                                 </Text>
                                 <HStack justify="space-between">
-                                    <Text color="gray.600">Departure: {ride.station_departure.name} at {ride.ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-                                    <Text color="gray.600">Arrival: {ride.station_arrival.name} at {ride.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                                    <Text color="gray.600">
+                                        Departure: {ride.station_departure} at {ride.ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </Text>
+                                    <Text color="gray.600">
+                                        Arrival: {ride.station_arrival} at {ride.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    </Text>
                                 </HStack>
                             </Box>
                         ))}
@@ -58,6 +62,9 @@ const JourneyResultComponent = ({ journeyResult }) => {
                     <Text color="gray.600">Date & Time: {journeyResult.meetingOptions.datetime.toLocaleString()}</Text>
                     <Text color="gray.600">Preferred Duration: {journeyResult.meetingOptions.duration}</Text>
                     <Text color="gray.600">Actual Duration: {journeyResult.meetingOptions.actual_duration}</Text>
+                    <Text color="gray.600" mt={2}>
+                        Meeting Station: {journeyResult.meetingOptions.meeting_station}
+                    </Text>
                 </Box>
             </VStack>
         </div>
