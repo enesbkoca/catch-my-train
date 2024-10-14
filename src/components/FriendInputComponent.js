@@ -2,7 +2,6 @@ import React, {useState, useContext, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContext } from './MapContext';
 import {
-    getTodaysDate,
     getOneHourAheadTime,
     updateMarkers,
     handleFriendChange,
@@ -10,7 +9,7 @@ import {
     removeFriend,
     addFriend,
     handleSubmit,
-    handleMeetingChange
+    handleMeetingChange, adjustToLocalTime
 } from "../utils/helperFunctions";
 
 const FriendInputComponent = ({ stations }) => {
@@ -21,8 +20,7 @@ const FriendInputComponent = ({ stations }) => {
         { name: '', station: '' }
     ]);
     const [meetingOptions, setMeetingOptions] = useState({
-        meeting_date: getTodaysDate(),
-        meeting_time: getOneHourAheadTime(),
+        datetime: getOneHourAheadTime(),
         duration: '03:00'
     });
 
@@ -61,11 +59,9 @@ const FriendInputComponent = ({ stations }) => {
 
             <div className="row label-row">
                 <div>
-                    <label htmlFor="meeting-date">Date</label>
+                    <label htmlFor="meeting-date">Date & Time</label>
                 </div>
-                <div>
-                    <label htmlFor="meeting-time">Time</label>
-                </div>
+
                 <div>
                     <label htmlFor="meeting-duration">Duration</label>
                 </div>
@@ -73,16 +69,10 @@ const FriendInputComponent = ({ stations }) => {
 
             <div className="row meeting-options">
                 <input
-                    type="date"
-                    id="meeting-date"
-                    value={meetingOptions.meeting_date}
-                    onChange={(e) => handleMeetingChange("meeting_date", e.target.value, meetingOptions, setMeetingOptions)}
-                />
-                <input
-                    type="time"
-                    id="meeting-time"
-                    value={meetingOptions.meeting_time}
-                    onChange={(e) => handleMeetingChange("meeting_time", e.target.value, meetingOptions, setMeetingOptions)}
+                    type="datetime-local"
+                    id="meeting-datetime"
+                    value={adjustToLocalTime(meetingOptions.datetime)}
+                    onChange={(e) => handleMeetingChange("datetime", new Date(e.target.value), meetingOptions, setMeetingOptions)}
                 />
                 <input
                     type="time"

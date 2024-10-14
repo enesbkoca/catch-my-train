@@ -16,23 +16,11 @@ export const createCustomIcon = (color) => {
     });
 };
 
-export const getTodaysDate = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-};
-
 export const getOneHourAheadTime = () => {
-    const now = new Date();
-    now.setHours(now.getHours() + 1);
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-
-    return `${hours}:${minutes}`; // Format to HH:MM
+    const now = new Date(); // Get the current local time
+    now.setHours(now.getHours() + 1); // Add one hour to the local time
+    return now; // Return the modified date object
 };
-
 
 // func to handle adding new rows
 export const addFriend = (prevFriends, setFriends, addMarker) => {
@@ -77,11 +65,14 @@ export const handleMeetingChange = (field, value, prevOptions, setMeetingOptions
     }));
 }
 
-export const handleSubmit = (friends, meetingOptions, navigate) => {
-    const journeyResults = computeJourney(friends, meetingOptions);
+export const handleSubmit = async (friends, meetingOptions, navigate) => {
+    // Await the async computeJourney function
+    const journeyResults = await computeJourney(friends, meetingOptions);
 
+    // Navigate to the '/journey' page and pass the journey results
     navigate('/journey', { state: { journeyResults } });
 };
+
 
 export const updateMarkers = (friends, stations, markers, updateMarker) => {
     friends.forEach((friend, index) => {
@@ -102,3 +93,8 @@ export const renderStationOptions = (stations) => {
         </option>
     ));
 }
+
+export const adjustToLocalTime = (utcDate) => {
+    const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000)); // Adjust for timezone offset
+    return localDate.toISOString().slice(0, 16); // Format to "YYYY-MM-DDTHH:MM"
+};
