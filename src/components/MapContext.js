@@ -1,12 +1,21 @@
-import React, { createContext, useState } from 'react';
-import {coordinatesNetherlands} from "../assets/constants";
+import React, {createContext, useEffect, useState} from 'react';
+import GetStations from "../utils/fetchStations";
 
 export const MapContext = createContext();
 
-export const MapProvider = ({ children, stations }) => {
+export const MapProvider = ({ children }) => {
     const markerColors = ['violet', 'green', 'blue', 'grey', 'red'];
-
     const [markers, setMarkers] = useState([]);
+    const [stations, setStations] = useState([])
+
+    useEffect(() => {
+        const fetchStations = async () => {
+            const stationsData = await GetStations();
+            setStations(stationsData);
+        };
+
+        fetchStations();
+    }, []);
 
     const getColorByFriendId = (friend_id) => {
         return markerColors[friend_id % markerColors.length]; // Use modulo to loop through available colors
@@ -14,10 +23,8 @@ export const MapProvider = ({ children, stations }) => {
 
     const addMarker = (newMarker) => {
         const color = getColorByFriendId(newMarker.friend_id);
-        const station = stations.find(station => station.name === newMarker.station);
-        const position = station ? station.coordinates : coordinatesNetherlands;
 
-        setMarkers(prevMarkers => [...prevMarkers, { ...newMarker, color, position }]);
+        setMarkers(prevMarkers => [...prevMarkers, { ...newMarker, color }]);
     };
 
     // Remove marker by friend_id

@@ -1,22 +1,19 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect} from 'react';
 import { MapContext } from './MapContext';
 import { Box, Text, VStack, HStack, Divider} from '@chakra-ui/react';
+import {updateJourneyMarkers} from "../utils/helperFunctions";
 
 const JourneyResultComponent = ({ journeyResult }) => {
-    // const { markers, addMarker, removeMarker } = useContext(MapContext);
-    //
-    // useEffect(() => {
-    //     // Clear existing markers
-    //     markers.forEach(marker => removeMarker(marker.id));
-    //
-    //     // Add markers for each friend's journey
-    //     journeyResult.friends.forEach(friend => {
-    //         friend.trainRide.forEach(ride => {
-    //             addMarker({ lat: ride.station_departure.lat, lng: ride.station_departure.lng, label: ride.station_departure.name });
-    //             addMarker({ lat: ride.station_arrival.lat, lng: ride.station_arrival.lng, label: ride.station_arrival.name });
-    //         });
-    //     });
-    // }, [journeyResult, addMarker, removeMarker, markers]);
+    const { markers, addMarker, removeMarker, updateMarker, stations } = useContext(MapContext);
+
+    useEffect(() => {
+        console.log(stations);
+        updateJourneyMarkers(journeyResult, stations, addMarker, removeMarker, markers);
+    }, [journeyResult, stations]);
+
+    useEffect(() => {
+        console.log("Markers have been updated: ", markers);
+    }, [markers]);
 
     return (
         <div className="journey-result">
