@@ -23,38 +23,21 @@ export const getOneHourAheadTime = () => {
 };
 
 // func to handle adding new rows
-export const addFriend = (prevFriends, setFriends, addMarker) => {
-    setFriends(prevFriends => [...prevFriends, {name: '', station: ''}]);
-    addMarker({ position: coordinatesNetherlands });
+export const addFriend = (prevFriends, setFriends,) => {
+    const newIndex = prevFriends.reduce((maxId, friend) => Math.max(maxId, friend.friend_id), 0) + 1;
+    setFriends(prevFriends => [...prevFriends, {friend_id: newIndex, name: '', station: ''}]);
 };
 
 // func to remove row
-export const removeFriend = (index, prevFriends, setFriends, removeMarker) => {
+export const removeFriend = (index, prevFriends, setFriends,) => {
     setFriends(prevFriends => prevFriends.filter((_, i) => i !== index));
-    removeMarker(index);
-};
-
-
-export const handleMarkerChange = (index, coordinates, updateMarker) => {
-    const newMarker = {
-        position: coordinates, // use the provided coordinates
-    };
-    updateMarker(index, newMarker);
 };
 
 // func to handle input changes
-export const handleFriendChange = (index, field, value, friends, setFriends, stations, updateMarker) => {
+export const handleFriendChange = (index, field, value, friends, setFriends) => {
     const newFriends = [...friends];
     newFriends[index][field] = value;
     setFriends(newFriends);
-
-    // update marker if station was changes
-    if (field === 'station') {
-        const selectedStation = stations.find(station => station.name === value);
-        if (selectedStation) {
-            handleMarkerChange(index, selectedStation.coordinates, updateMarker);
-        }
-    }
 };
 
 
@@ -73,18 +56,57 @@ export const handleSubmit = async (friends, meetingOptions, navigate) => {
     navigate('/journey', { state: { journeyResults } });
 };
 
+export const updateFriendInputMarkers = (friends, stations, markers, addMarker, removeMarker, updateMarker) => {
+    const friendIds = friends.map(friend => friend.friend_id);
 
-export const updateMarkers = (friends, stations, markers, updateMarker) => {
-    friends.forEach((friend, index) => {
+    friends.forEach(friend => {
         const station = stations.find(station => station.name === friend.station);
-        const newMarker = station ? station.coordinates : coordinatesNetherlands;
+        const position = station ? station.coordinates : coordinatesNetherlands;
 
-        // Only update if the coordinates are different
-        if (markers[index]?.position.toString() !== newMarker.toString()) {
-            updateMarker(index, { position: newMarker });
+        // Find all existing markers by friend_id
+        const existingMarkers = markers.filter(marker => marker.friend_id === friend.friend_id);
+
+        // If there are existing markers, update all of them
+        if (existingMarkers.length > 0) {
+            existingMarkers.forEach(() => {
+                // Update each marker with the new position
+                updateMarker({
+                    friend_id: friend.friend_id,
+                    station_name: friend.station,
+                    position: position
+                });
+            });
+        } else {
+            // If no existing marker found, add a new marker
+            addMarker({
+                friend_id: friend.friend_id,
+                station_name: friend.station,
+                position: position
+            });
         }
     });
+
+    // Remove markers which don't have a friend
+    markers.forEach(marker => {
+            if (!friendIds.includes(marker.friend_id)) {
+                removeMarker(marker.friend_id);
+            }
+        }
+    )
 };
+
+export const updateJourneyMarkers = (journeyResult, addMarker, removeMarker, markers) => {
+    // Clear existing markers
+    markers.forEach((_, index) => removeMarker(index));
+
+    // Add markers for each friend's journey
+    journeyResult.friends.forEach(friend => {
+        friend.trainRide.forEach(ride => {
+            addMarker({ride});
+            addMarker({  });
+        });
+    });
+}
 
 export const renderStationOptions = (stations) => {
     return stations.map((station, optIndex) => (
