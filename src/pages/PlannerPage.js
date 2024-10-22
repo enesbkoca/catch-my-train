@@ -18,10 +18,10 @@ const PlannerPage = () => {
 
     return (
         <div>
-            <MapProvider>
+            <MapProvider stations={stations}>
                 <div className="mainbody">
                     <div>
-                        <FriendInputComponent stations={stations}/>
+                        <FriendInputComponent/>
                     </div>
 
                     <div className="MapComponent">
