@@ -22,6 +22,21 @@ export const getOneHourAheadTime = () => {
     return now; // Return the modified date object
 };
 
+export const getCoordinates = (station_name, stations) => {
+    // Find the station by name
+    const station = stations.find(station => station.name === station_name);
+
+    // Check if the station is found
+    if (station) {
+        console.log("Found station with: " + JSON.stringify(station));
+        return station.coordinates;
+    } else {
+        // Log a message if default coordinates are used
+        console.warn(`Station "${station_name}" not found. Using default coordinates:`, coordinatesNetherlands);
+        return coordinatesNetherlands;
+    }
+};
+
 // func to handle adding new rows
 export const addFriend = (prevFriends, setFriends,) => {
     const newIndex = prevFriends.reduce((maxId, friend) => Math.max(maxId, friend.friend_id), 0) + 1;
@@ -59,12 +74,11 @@ export const handleSubmit = async (friends, meetingOptions, navigate) => {
 export const updateFriendInputMarkers = (friends, stations, markers, addMarker, removeMarker, updateMarker) => {
     const friendIds = friends.map(friend => friend.friend_id);
 
-    friends.forEach(friend => {
-        const station = stations.find(station => station.name === friend.station);
-        const position = station ? station.coordinates : coordinatesNetherlands;
 
+    friends.forEach(friend => {
         // Find all existing markers by friend_id
         const existingMarkers = markers.filter(marker => marker.friend_id === friend.friend_id);
+        const position = getCoordinates(friend.station, stations);
 
         // If there are existing markers, update all of them
         if (existingMarkers.length > 0) {
@@ -95,18 +109,23 @@ export const updateFriendInputMarkers = (friends, stations, markers, addMarker, 
     )
 };
 
-export const updateJourneyMarkers = (journeyResult, addMarker, removeMarker, markers) => {
+export const updateJourneyMarkers = (journeyResult, stations, addMarker, removeMarker, markers) => {
     // Clear existing markers
-    markers.forEach((_, index) => removeMarker(index));
+    markers.forEach(marker => removeMarker(marker.friend_id)); // Use friend_id to ensure correct removal
+
 
     // Add markers for each friend's journey
     journeyResult.friends.forEach(friend => {
         friend.trainRide.forEach(ride => {
-            addMarker({ride});
-            addMarker({  });
+            const position = getCoordinates(ride.station_departure, stations);
+            addMarker({
+                friend_id: friend.friend_id,
+                station_name: ride.station_departure,
+                position: position
+            });
         });
     });
-}
+};
 
 export const renderStationOptions = (stations) => {
     return stations.map((station, optIndex) => (
