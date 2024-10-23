@@ -2,6 +2,57 @@ import React, {useContext, useEffect} from 'react';
 import { MapContext } from './MapContext';
 import { Box, Text, VStack, HStack, Divider} from '@chakra-ui/react';
 import {updateJourneyMarkers} from "../utils/helperFunctions";
+import { FaArrowRight } from 'react-icons/fa';
+
+// Function to render a friend's train rides
+const RenderRides = ({ rides }) => {
+    if (!rides || rides.length === 0) return null; // If no rides, do nothing
+    const firstRide = rides[0];
+    const lastRide = rides[rides.length - 1];
+
+    return (
+        <HStack spacing={6} align="center">
+            {/* Display the departure station of the first ride */}
+            <VStack spacing={1} align="center">
+                <Text fontSize="md" fontWeight="bold" color="gray.800">{firstRide.station_departure}</Text>
+                <Text fontSize="sm" color="gray.500">
+                    {firstRide.ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </Text>
+            </VStack>
+
+            {/* Loop through rides to display arrows and intermediate stations */}
+            {rides.slice(0, -1).map((ride, index) => (
+                <React.Fragment key={index}>
+                    <FaArrowRight size={20} color="gray" />
+
+                    <VStack spacing={1} align="center">
+                        <Text fontSize="md" fontWeight="bold" color="gray.800">{ride.station_arrival}</Text>
+                        <HStack justify="space-between" width="100%">
+                            <Text fontSize="sm" color="gray.500">
+                                {ride.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </Text>
+                            {rides[index + 1] && (
+                                <Text fontSize="sm" color="gray.500">
+                                    {rides[index + 1].ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </Text>
+                            )}
+                        </HStack>
+                    </VStack>
+                </React.Fragment>
+            ))}
+
+            {/* Display the arrival station of the last ride */}
+            <FaArrowRight size={20} color="gray" />
+            <VStack spacing={1} align="center">
+                <Text fontSize="md" fontWeight="bold" color="gray.800">{lastRide.station_arrival}</Text>
+                <Text fontSize="sm" color="gray.500">
+                    {lastRide.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </Text>
+            </VStack>
+        </HStack>
+    );
+};
+
 
 const JourneyResultComponent = ({ journeyResult }) => {
     const { markers, addMarker, removeMarker, stations } = useContext(MapContext);
@@ -30,23 +81,13 @@ const JourneyResultComponent = ({ journeyResult }) => {
                     >
                         <Text fontSize="lg" fontWeight="bold" color="blue.800">{friend.name}</Text>
                         <Divider my={2} />
-                        {friend.trainRide.map((ride, rideIndex) => (
-                            <Box key={rideIndex} mt={2} p={3} borderWidth="1px" borderRadius="md" backgroundColor="gray.100">
-                                <Text fontSize="md" fontWeight="semibold" color="teal.600">
-                                    Train Ride {rideIndex + 1}
-                                </Text>
-                                <HStack justify="space-between">
-                                    <Text color="gray.600">
-                                        Departure: {ride.station_departure} at {ride.ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </Text>
-                                    <Text color="gray.600">
-                                        Arrival: {ride.station_arrival} at {ride.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </Text>
-                                </HStack>
-                            </Box>
-                        ))}
+
+                        {/* Render the rides for each friend */}
+                        <RenderRides rides={friend.trainRide} />
                     </Box>
                 ))}
+
+                {/* Meeting options section */}
                 <Box
                     p={4}
                     borderWidth="1px"
@@ -67,8 +108,7 @@ const JourneyResultComponent = ({ journeyResult }) => {
             </VStack>
         </div>
     );
-
-
 };
+
 
 export default JourneyResultComponent;
