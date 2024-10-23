@@ -4,11 +4,12 @@ import { Box, Text, VStack, HStack, Divider} from '@chakra-ui/react';
 import {updateJourneyMarkers} from "../utils/helperFunctions";
 
 const JourneyResultComponent = ({ journeyResult }) => {
-    const { markers, addMarker, removeMarker, updateMarker, stations } = useContext(MapContext);
+    const { markers, addMarker, removeMarker, stations } = useContext(MapContext);
 
     useEffect(() => {
         console.log(stations);
         updateJourneyMarkers(journeyResult, stations, addMarker, removeMarker, markers);
+        // eslint-disable-next-line
     }, [journeyResult, stations]);
 
     useEffect(() => {
@@ -66,6 +67,8 @@ const JourneyResultComponent = ({ journeyResult }) => {
             </VStack>
         </div>
     );
+
+
 };
 
 export default JourneyResultComponent;
