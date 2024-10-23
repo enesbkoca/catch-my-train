@@ -109,6 +109,22 @@ export const updateFriendInputMarkers = (friends, stations, markers, addMarker, 
     )
 };
 
+export const getColorByFriendId = (friend_id, background = false) => {
+    const backgroundColors = {
+        0: "#E1C6FF", // lighter violet
+        1: "#A8E8B2", // lighter green
+        2: "#A1D4F7", // lighter blue
+        3: "#C2C6D1", // lighter grey
+        4: "#F9B2B2", // lighter red
+    };
+    const markerColors = ['violet', 'green', 'blue', 'grey', 'red'];
+
+    const markerColor = markerColors[friend_id % markerColors.length];
+    const backgroundColor = backgroundColors[friend_id % markerColors.length];
+
+    return background ? backgroundColor : markerColor;
+};
+
 export const updateJourneyMarkers = (journeyResult, stations, addMarker, removeMarker, markers) => {
     // Clear existing markers
     markers.forEach(marker => removeMarker(marker.friend_id)); // Use friend_id to ensure correct removal

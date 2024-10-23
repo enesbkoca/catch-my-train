@@ -1,10 +1,11 @@
 import React, {createContext, useEffect, useState} from 'react';
 import GetStations from "../utils/fetchStations";
+import {getColorByFriendId} from "../utils/helperFunctions";
 
 export const MapContext = createContext();
 
 export const MapProvider = ({ children }) => {
-    const markerColors = ['violet', 'green', 'blue', 'grey', 'red'];
+
     const [markers, setMarkers] = useState([]);
     const [stations, setStations] = useState([])
 
@@ -16,10 +17,6 @@ export const MapProvider = ({ children }) => {
 
         fetchStations();
     }, []);
-
-    const getColorByFriendId = (friend_id) => {
-        return markerColors[friend_id % markerColors.length]; // Use modulo to loop through available colors
-    };
 
     const addMarker = (newMarker) => {
         const color = getColorByFriendId(newMarker.friend_id);
