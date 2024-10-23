@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import { MapContext } from './MapContext';
 import { Box, Text, VStack, HStack, Divider} from '@chakra-ui/react';
-import {updateJourneyMarkers} from "../utils/helperFunctions";
+import { getColorByFriendId, updateJourneyMarkers } from "../utils/helperFunctions";
 import { FaArrowRight } from 'react-icons/fa';
 
 // Function to render a friend's train rides
@@ -77,9 +77,9 @@ const JourneyResultComponent = ({ journeyResult }) => {
                         borderWidth="1px"
                         borderRadius="md"
                         boxShadow="md"
-                        backgroundColor="blue.50"
+                        backgroundColor={getColorByFriendId(friend.friend_id, true) } // Set background color based on friend_id
                     >
-                        <Text fontSize="lg" fontWeight="bold" color="blue.800">{friend.name}</Text>
+                        <Text fontSize="lg" fontWeight="bold" color={getColorByFriendId(friend.friend_id) + '.800'}>{friend.name}</Text>
                         <Divider my={2} />
 
                         {/* Render the rides for each friend */}
