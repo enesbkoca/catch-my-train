@@ -141,6 +141,11 @@ export const updateJourneyMarkers = (journeyResult, stations, addMarker, removeM
             });
         });
     });
+
+    const meetingPosition = getCoordinates(journeyResult.meetingOptions.meeting_station, stations);
+    addMarker({
+        station_name: journeyResult.meetingOptions.meeting_station,
+        position: meetingPosition}, "gold");
 };
 
 export const renderStationOptions = (stations) => {

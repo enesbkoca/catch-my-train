@@ -18,9 +18,8 @@ export const MapProvider = ({ children }) => {
         fetchStations();
     }, []);
 
-    const addMarker = (newMarker) => {
-        const color = getColorByFriendId(newMarker.friend_id);
-
+    const addMarker = (newMarker, markerColor=null) => {
+        const color = markerColor === null ? getColorByFriendId(newMarker.friend_id) : markerColor;
         setMarkers(prevMarkers => [...prevMarkers, { ...newMarker, color }]);
     };
 

@@ -11,7 +11,7 @@ const RenderRides = ({ rides }) => {
     const lastRide = rides[rides.length - 1];
 
     return (
-        <HStack spacing={6} align="center">
+        <HStack spacing={6} align="center" justifyContent="space-around">
             {/* Display the departure station of the first ride */}
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{firstRide.station_departure}</Text>
