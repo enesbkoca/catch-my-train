@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContext } from './MapContext';
 import {
@@ -9,15 +9,17 @@ import {
     removeFriend,
     addFriend,
     handleSubmit,
-    handleMeetingChange, adjustToLocalTime
+    handleMeetingChange,
+    adjustToLocalTime
 } from "../utils/helperFunctions";
+import { Box, Button, Input, Select, VStack, HStack, Divider, Text } from '@chakra-ui/react';
 
 const FriendInputComponent = () => {
     const navigate = useNavigate();
     const { markers, addMarker, removeMarker, updateMarker, stations } = useContext(MapContext);
     const [friends, setFriends] = useState([
-        { name: 'Jack', station: 'Amsterdam Centraal' , friend_id: 0},
-        { name: 'Alice', station: 'Rotterdam Centraal', friend_id: 1}
+        { name: 'Jack', station: 'Amsterdam Centraal', friend_id: 0 },
+        { name: 'Alice', station: 'Rotterdam Centraal', friend_id: 1 }
     ]);
     const [meetingOptions, setMeetingOptions] = useState({
         datetime: getOneHourAheadTime(),
@@ -26,7 +28,7 @@ const FriendInputComponent = () => {
 
     useEffect(() => {
         updateFriendInputMarkers(friends, stations, markers, addMarker, removeMarker, updateMarker);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [friends, stations]);
 
     useEffect(() => {
@@ -34,67 +36,81 @@ const FriendInputComponent = () => {
     }, [markers]);
 
     return (
-        <div className="friend-input">
-            {friends.map((friend, index) => (
-                <div key={index} className="row">
-                    <input
-                        id="friend-name"
-                        type="text"
-                        placeholder="Name"
-                        value={friend.name}
-                        onChange={(e) => handleFriendChange(index, 'name', e.target.value, friends, setFriends)}
+        <Box className="friend-input" p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" backgroundColor="blue.50">
+            <VStack spacing={4} align="stretch">
+                {friends.map((friend, index) => (
+                    <HStack key={index} spacing={3} align="center">
+                        <Input
+                            id="friend-name"
+                            placeholder="Name"
+                            value={friend.name}
+                            onChange={(e) => handleFriendChange(index, 'name', e.target.value, friends, setFriends)}
+                            variant="filled"
+                            size="md"
+                        />
+                        <Select
+                            id="starting-station"
+                            value={friend.station}
+                            onChange={(e) => {
+                                handleFriendChange(index, 'station', e.target.value, friends, setFriends);
+                            }}
+                            placeholder="Starting Station"
+                        >
+                            {renderStationOptions(stations)}
+                        </Select>
+                        <Button
+                            colorScheme="red"
+                            onClick={() => removeFriend(index, friends, setFriends)}
+                            isDisabled={friends.length < 3}
+                        >
+                            &ndash;
+                        </Button>
+                    </HStack>
+                ))}
+
+                <Divider />
+
+                <HStack spacing={3} justify="space-between">
+                    <Text fontWeight="bold">Date & Time</Text>
+                    <Text fontWeight="bold">Duration</Text>
+                </HStack>
+
+                <HStack spacing={3}>
+                    <Input
+                        type="datetime-local"
+                        id="meeting-datetime"
+                        value={adjustToLocalTime(meetingOptions.datetime)}
+                        onChange={(e) => handleMeetingChange("datetime", new Date(e.target.value), meetingOptions, setMeetingOptions)}
+                        variant="filled"
+                        size="md"
                     />
-                    <select
-                        id="starting-station"
-                        value={friend.station}
-                        onChange={(e) => {
-                            handleFriendChange(index, 'station', e.target.value, friends, setFriends);
-                        }}
+                    <Input
+                        type="time"
+                        id="meeting-duration"
+                        value={meetingOptions.duration}
+                        onChange={(e) => handleMeetingChange("duration", e.target.value, meetingOptions, setMeetingOptions)}
+                        variant="filled"
+                        size="md"
+                    />
+                    <Button
+                        colorScheme="blue"
+                        onClick={() => addFriend(friends, setFriends, addMarker)}
+                        isDisabled={friends.length >= 5}
                     >
-                        <option value="">Starting Station</option>
-                        {renderStationOptions(stations)}
-                    </select>
-                    <button className="remove-button" onClick={() => removeFriend(index, friends, setFriends)}
-                            disabled={friends.length < 3}>
-                        &ndash;
-                    </button>
-                </div>
-            ))}
+                        +
+                    </Button>
+                </HStack>
 
-            <div className="row label-row">
-                <div>
-                    <label htmlFor="meeting-date">Date & Time</label>
-                </div>
-
-                <div>
-                    <label htmlFor="meeting-duration">Duration</label>
-                </div>
-            </div>
-
-            <div className="row meeting-options">
-                <input
-                    type="datetime-local"
-                    id="meeting-datetime"
-                    value={adjustToLocalTime(meetingOptions.datetime)}
-                    onChange={(e) => handleMeetingChange("datetime", new Date(e.target.value), meetingOptions, setMeetingOptions)}
-                />
-                <input
-                    type="time"
-                    id="meeting-duration"
-                    value={meetingOptions.duration}
-                    onChange={(e) => handleMeetingChange("duration", e.target.value, meetingOptions, setMeetingOptions)}
-                />
-                <button className="add-button" onClick={() => addFriend(friends, setFriends, addMarker)} disabled={friends.length >= 5}>
-                    +
-                </button>
-            </div>
-
-            <div className={"row"}>
-                <button className={"submit-button"} onClick={() => handleSubmit(friends, meetingOptions, navigate)}>
-                    Plan the perfect journey
-                </button>
-            </div>
-        </div>
+                <HStack justify="center">
+                    <Button
+                        colorScheme="teal"
+                        onClick={() => handleSubmit(friends, meetingOptions, navigate)}
+                    >
+                        Plan the perfect journey
+                    </Button>
+                </HStack>
+            </VStack>
+        </Box>
     );
 };
 
