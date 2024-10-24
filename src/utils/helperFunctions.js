@@ -63,6 +63,17 @@ export const handleMeetingChange = (field, value, prevOptions, setMeetingOptions
     }));
 }
 
+export const getDurationDifference = (meetingOptions) => {
+    const [hoursPref, minutesPref] = meetingOptions.duration.split(":").map(Number);
+    const [hoursActual, minutesActual] = meetingOptions.actual_duration.split(":").map(Number);
+    const preferredMinutes = hoursPref * 60 + minutesPref;
+    const actualMinutes = hoursActual * 60 + minutesActual;
+    const diff = actualMinutes - preferredMinutes;
+
+    const diffStr = (diff >= 0) ? "+" : "";
+    return diffStr + diff.toString();
+};
+
 export const handleSubmit = async (friends, meetingOptions, navigate) => {
     // Await the async computeJourney function
     const journeyResults = await computeJourney(friends, meetingOptions);

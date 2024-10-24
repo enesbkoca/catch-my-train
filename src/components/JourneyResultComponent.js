@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 import { MapContext } from './MapContext';
-import { Box, Text, VStack, HStack, Divider} from '@chakra-ui/react';
-import { getColorByFriendId, updateJourneyMarkers } from "../utils/helperFunctions";
+import { Box, Text, VStack, HStack, Divider } from '@chakra-ui/react';
+import { getColorByFriendId, updateJourneyMarkers, getDurationDifference } from "../utils/helperFunctions";
 import { FaArrowRight } from 'react-icons/fa';
 
 // Function to render a friend's train rides
@@ -11,7 +11,7 @@ const RenderRides = ({ rides }) => {
     const lastRide = rides[rides.length - 1];
 
     return (
-        <HStack spacing={6} align="center" justifyContent="space-around">
+        <HStack spacing={2} align="center" justifyContent="space-around">
             {/* Display the departure station of the first ride */}
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{firstRide.station_departure}</Text>
@@ -69,7 +69,51 @@ const JourneyResultComponent = ({ journeyResult }) => {
 
     return (
         <div className="journey-result">
-            <VStack spacing={4} align="stretch">
+            {/* Meeting options section */}
+            <Box
+                p={3}
+                borderWidth="1px"
+                borderRadius="lg"
+                boxShadow="lg"
+                mt={3}
+                maxW="lg"
+                backgroundColor="blue.50"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                <Box>
+                    <Text fontSize="md" fontWeight="semibold" color="blue.800" mb={1}>
+                        {new Date(journeyResult.meetingOptions.datetime).toLocaleString('en-GB', {
+                            weekday: 'short',
+                            day: 'numeric',
+                            month: 'short',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}
+                    </Text>
+                    <Text fontSize="md" color="gray.600">
+                        @ {journeyResult.meetingOptions.meeting_station}
+                    </Text>
+                </Box>
+
+                <Box textAlign="right">
+                    <Text fontSize="lg" fontWeight="semibold" color="gray.500">
+                        Duration:
+                    </Text>
+                    <Text fontSize="md" color="gray.700">
+                        {journeyResult.meetingOptions.actual_duration} min
+                        {getDurationDifference(journeyResult.meetingOptions) !== 0 && (
+                            <Text as="span" color="gray.500">
+                                &nbsp;({getDurationDifference(journeyResult.meetingOptions)} min)
+                            </Text>
+                        )}
+                    </Text>
+                </Box>
+            </Box>
+
+            <VStack spacing={3} align="stretch">
                 {journeyResult.friends.map((friend, index) => (
                     <Box
                         key={index}
@@ -79,32 +123,20 @@ const JourneyResultComponent = ({ journeyResult }) => {
                         boxShadow="md"
                         backgroundColor={getColorByFriendId(friend.friend_id, true) } // Set background color based on friend_id
                     >
-                        <Text fontSize="lg" fontWeight="bold" color={getColorByFriendId(friend.friend_id) + '.800'}>{friend.name}</Text>
-                        <Divider my={2} />
+                        <Text
+                            fontSize="lg"
+                            margin={0}
+                            fontWeight="bold"
+                            align="center"
+                            color={getColorByFriendId(friend.friend_id) + '.800'}>
+                            {friend.name}
+                        </Text>
+                        <Divider my={2} margin={1} />
 
                         {/* Render the rides for each friend */}
-                        <RenderRides rides={friend.trainRide} />
+                        <RenderRides align="center" rides={friend.trainRide}  />
                     </Box>
                 ))}
-
-                {/* Meeting options section */}
-                <Box
-                    p={4}
-                    borderWidth="1px"
-                    borderRadius="md"
-                    boxShadow="md"
-                    mt={4}
-                    backgroundColor="green.50"
-                >
-                    <Text fontSize="lg" fontWeight="bold" color="green.800">Meeting Options</Text>
-                    <Divider my={2} />
-                    <Text color="gray.600">Date & Time: {journeyResult.meetingOptions.datetime.toLocaleString()}</Text>
-                    <Text color="gray.600">Preferred Duration: {journeyResult.meetingOptions.duration}</Text>
-                    <Text color="gray.600">Actual Duration: {journeyResult.meetingOptions.actual_duration}</Text>
-                    <Text color="gray.600" mt={2}>
-                        Meeting Station: {journeyResult.meetingOptions.meeting_station}
-                    </Text>
-                </Box>
             </VStack>
         </div>
     );
