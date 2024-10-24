@@ -36,7 +36,7 @@ const FriendInputComponent = () => {
     }, [markers]);
 
     return (
-        <Box className="friend-input" p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" backgroundColor="blue.50">
+        <Box className="friend-input" p={4} borderWidth="1px" borderRadius="lg" boxShadow="lg" backgroundColor="gray.100">
             <VStack spacing={4} align="stretch">
                 {friends.map((friend, index) => (
                     <HStack key={index} spacing={3} align="center">
@@ -59,7 +59,7 @@ const FriendInputComponent = () => {
                             {renderStationOptions(stations)}
                         </Select>
                         <Button
-                            colorScheme="red"
+                            colorScheme="orange" // Softer color for the remove button
                             onClick={() => removeFriend(index, friends, setFriends)}
                             isDisabled={friends.length < 3}
                         >
@@ -93,7 +93,7 @@ const FriendInputComponent = () => {
                         size="md"
                     />
                     <Button
-                        colorScheme="blue"
+                        colorScheme="teal" // Softer color for the add button
                         onClick={() => addFriend(friends, setFriends, addMarker)}
                         isDisabled={friends.length >= 5}
                     >
@@ -103,7 +103,7 @@ const FriendInputComponent = () => {
 
                 <HStack justify="center">
                     <Button
-                        colorScheme="teal"
+                        colorScheme="blue" // Softer color for the submit button
                         onClick={() => handleSubmit(friends, meetingOptions, navigate)}
                     >
                         Plan the perfect journey
