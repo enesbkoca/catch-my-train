@@ -1,10 +1,9 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import { MapContext } from './MapContext';
 import { Box, Text, VStack, HStack, Divider } from '@chakra-ui/react';
 import { getColorByFriendId, updateJourneyMarkers, getDurationDifference } from "../utils/helperFunctions";
 import { FaArrowRight } from 'react-icons/fa';
 
-// Function to render a friend's train rides
 const RenderRides = ({ rides }) => {
     if (!rides || rides.length === 0) return null; // If no rides, do nothing
     const firstRide = rides[0];
@@ -12,7 +11,6 @@ const RenderRides = ({ rides }) => {
 
     return (
         <HStack spacing={2} align="center" justifyContent="space-around">
-            {/* Display the departure station of the first ride */}
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{firstRide.station_departure}</Text>
                 <Text fontSize="sm" color="gray.500">
@@ -20,11 +18,9 @@ const RenderRides = ({ rides }) => {
                 </Text>
             </VStack>
 
-            {/* Loop through rides to display arrows and intermediate stations */}
             {rides.slice(0, -1).map((ride, index) => (
                 <React.Fragment key={index}>
                     <FaArrowRight size={20} color="gray" />
-
                     <VStack spacing={1} align="center">
                         <Text fontSize="md" fontWeight="bold" color="gray.800">{ride.station_arrival}</Text>
                         <HStack justify="space-between" width="100%">
@@ -41,7 +37,6 @@ const RenderRides = ({ rides }) => {
                 </React.Fragment>
             ))}
 
-            {/* Display the arrival station of the last ride */}
             <FaArrowRight size={20} color="gray" />
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{lastRide.station_arrival}</Text>
@@ -53,19 +48,12 @@ const RenderRides = ({ rides }) => {
     );
 };
 
-
 const JourneyResultComponent = ({ journeyResult }) => {
     const { markers, addMarker, removeMarker, stations } = useContext(MapContext);
 
     useEffect(() => {
-        console.log(stations);
         updateJourneyMarkers(journeyResult, stations, addMarker, removeMarker, markers);
-        // eslint-disable-next-line
     }, [journeyResult, stations]);
-
-    useEffect(() => {
-        console.log("Markers have been updated: ", markers);
-    }, [markers]);
 
     return (
         <div className="journey-result">
@@ -82,6 +70,8 @@ const JourneyResultComponent = ({ journeyResult }) => {
                 flexDirection="row"
                 alignItems="center"
                 justifyContent="space-between"
+                _hover={{ backgroundColor: "blue.100", boxShadow: "xl", transform: "scale(1.02)" }}
+                transition="all 0.2s"
             >
                 <Box>
                     <Text fontSize="md" fontWeight="semibold" color="blue.800" mb={1}>
@@ -121,7 +111,9 @@ const JourneyResultComponent = ({ journeyResult }) => {
                         borderWidth="1px"
                         borderRadius="md"
                         boxShadow="md"
-                        backgroundColor={getColorByFriendId(friend.friend_id, true) } // Set background color based on friend_id
+                        backgroundColor={getColorByFriendId(friend.friend_id, true)}
+                        _hover={{ backgroundColor: getColorByFriendId(friend.friend_id, true) + '.100', boxShadow: "lg" }}
+                        transition="all 0.2s"
                     >
                         <Text
                             fontSize="lg"
@@ -134,13 +126,12 @@ const JourneyResultComponent = ({ journeyResult }) => {
                         <Divider my={2} margin={1} />
 
                         {/* Render the rides for each friend */}
-                        <RenderRides align="center" rides={friend.trainRide}  />
+                        <RenderRides align="center" rides={friend.trainRide} />
                     </Box>
                 ))}
             </VStack>
         </div>
     );
 };
-
 
 export default JourneyResultComponent;
