@@ -14,7 +14,7 @@ const RenderRides = ({ rides }) => {
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{firstRide.station_departure}</Text>
                 <Text fontSize="sm" color="gray.500">
-                    {firstRide.ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {firstRide.ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}
                 </Text>
             </VStack>
 
@@ -25,11 +25,11 @@ const RenderRides = ({ rides }) => {
                         <Text fontSize="md" fontWeight="bold" color="gray.800">{ride.station_arrival}</Text>
                         <HStack justify="space-between" width="100%">
                             <Text fontSize="sm" color="gray.500">
-                                {ride.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                {ride.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}
                             </Text>
                             {rides[index + 1] && (
                                 <Text fontSize="sm" color="gray.500">
-                                    {rides[index + 1].ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                    {rides[index + 1].ride_departure.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}
                                 </Text>
                             )}
                         </HStack>
@@ -41,7 +41,7 @@ const RenderRides = ({ rides }) => {
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{lastRide.station_arrival}</Text>
                 <Text fontSize="sm" color="gray.500">
-                    {lastRide.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    {lastRide.ride_arrival.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}
                 </Text>
             </VStack>
         </HStack>
