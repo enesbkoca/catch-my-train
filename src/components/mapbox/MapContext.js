@@ -1,6 +1,6 @@
 import React, {createContext, useEffect, useState} from 'react';
-import GetStations from "../utils/fetchStations";
-import {getColorByFriendId} from "../utils/helperFunctions";
+import GetStations from "../../utils/fetchStations";
+import {getColorByFriendId} from "../../utils/helperFunctions";
 
 export const MapContext = createContext();
 
