@@ -136,27 +136,40 @@ export const getColorByFriendId = (friend_id, background = false) => {
     return background ? backgroundColor : markerColor;
 };
 
-export const updateJourneyMarkers = (journeyResult, stations, addMarker, removeMarker, markers) => {
+export const updateJourneyMarkers = (journeyResult, stations, addMarker, removeMarker, markers, addPolyline) => {
     // Clear existing markers
-    markers.forEach(marker => removeMarker(marker.friend_id)); // Use friend_id to ensure correct removal
+    markers.forEach(marker => removeMarker(marker.friend_id));
 
+    // Add marker for meeting point
+    const meetingPosition = getCoordinates(journeyResult.meetingOptions.meeting_station, stations);
+    addMarker({
+        station_name: journeyResult.meetingOptions.meeting_station,
+        position: meetingPosition
+    }, "gold");
 
-    // Add markers for each friend's journey
     journeyResult.friends.forEach(friend => {
+        const friendPositions = []; // Track each friend’s journey positions
+
         friend.trainRide.forEach(ride => {
             const position = getCoordinates(ride.station_departure, stations);
+
+            // Add marker for each station
             addMarker({
                 friend_id: friend.friend_id,
                 station_name: ride.station_departure,
                 position: position
             });
+
+            // Store position for drawing polyline
+            friendPositions.push(position);
         });
+
+        friendPositions.push(meetingPosition);
+        // Add polyline for the friend’s journey using addPolyline
+        addPolyline(friendPositions, getColorByFriendId(friend.friend_id));
     });
 
-    const meetingPosition = getCoordinates(journeyResult.meetingOptions.meeting_station, stations);
-    addMarker({
-        station_name: journeyResult.meetingOptions.meeting_station,
-        position: meetingPosition}, "gold");
+
 };
 
 export const renderStationOptions = (stations) => {

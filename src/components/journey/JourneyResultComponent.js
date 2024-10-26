@@ -6,11 +6,15 @@ import { FriendRides } from "./FriendRides";
 import {MeetingDetails} from "./MeetingDetails";
 
 const JourneyResultComponent = ({ journeyResult }) => {
-    const { markers, addMarker, removeMarker, stations } = useContext(MapContext);
+    const { markers, addMarker, removeMarker, stations, polylines, addPolyline } = useContext(MapContext);
 
     useEffect(() => {
-        updateJourneyMarkers(journeyResult, stations, addMarker, removeMarker, markers);
+        updateJourneyMarkers(journeyResult, stations, addMarker, removeMarker, markers, addPolyline);
     }, [journeyResult, stations]);
+
+    useEffect(() => {
+        console.log(polylines);
+    }, [polylines]);
 
     return (
         <div className="journey-result">

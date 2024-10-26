@@ -7,7 +7,8 @@ export const MapContext = createContext();
 export const MapProvider = ({ children }) => {
 
     const [markers, setMarkers] = useState([]);
-    const [stations, setStations] = useState([])
+    const [stations, setStations] = useState([]);
+    const [polylines, setPolylines] = useState([]);
 
     useEffect(() => {
         const fetchStations = async () => {
@@ -17,6 +18,14 @@ export const MapProvider = ({ children }) => {
 
         fetchStations();
     }, []);
+
+
+    const addPolyline = (positions, color = 'blue') => {
+        setPolylines(prevPolylines => [
+            ...prevPolylines,
+            { positions, color }
+        ]);
+    };
 
     const addMarker = (newMarker, markerColor=null) => {
         const color = markerColor === null ? getColorByFriendId(newMarker.friend_id) : markerColor;
@@ -40,7 +49,7 @@ export const MapProvider = ({ children }) => {
     };
 
     return (
-        <MapContext.Provider value={{ markers, setMarkers, addMarker, removeMarker, updateMarker, stations }}>
+        <MapContext.Provider value={{ markers, setMarkers, addMarker, removeMarker, updateMarker, stations, polylines, addPolyline }}>
             {children}
         </MapContext.Provider>
     );
