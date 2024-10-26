@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { MapContext } from './MapContext';
 import 'leaflet/dist/leaflet.css';
-import {coordinatesNetherlands} from "../assets/constants";
-import {createCustomIcon} from "../utils/helperFunctions";
+import {coordinatesNetherlands} from "../../assets/constants";
+import {createCustomIcon} from "../../utils/helperFunctions";
 
 const MapComponent = () => {
     const { markers } = useContext(MapContext);
