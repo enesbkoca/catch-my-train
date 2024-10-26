@@ -23,7 +23,7 @@ export const RedirectComponent = () => {
                     Hang tight! 🚆
                 </Text>
                 <Text fontSize="lg" color="gray.500">
-                    No journey results. Redirecting to the planner...
+                    No journey planned yet. Taking you back to the planner...
                 </Text>
             </VStack>
         </Center>
