@@ -1,21 +1,33 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 
-import MapComponent from "../components/MapComponent";
-import {MapProvider} from "../components/MapContext";
+import MapComponent from "../components/mapbox/MapComponent";
+import {MapProvider} from "../components/mapbox/MapContext";
 import JourneyResultComponent from "../components/journey/JourneyResultComponent";
+import {RedirectComponent} from "../components/Redirect";
 
 const JourneyPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const journeyResults = location.state?.journeyResults;
+    const [isRedirecting, setIsRedirecting] = useState(false);
 
-    // Redirect to planner if no journey results
     useEffect(() => {
         if (!journeyResults) {
-            navigate('/planner');
+            setIsRedirecting(true);
+            // Delay for 5 seconds, then redirect
+            const redirectTimeout = setTimeout(() => {
+                navigate('/planner');
+            }, 3000);
+
+            // Cleanup timeout on component unmount
+            return () => clearTimeout(redirectTimeout);
         }
     }, [journeyResults, navigate]);
+
+    if (isRedirecting) {
+        return <RedirectComponent/>;
+    }
 
     return (
         <div>
@@ -33,7 +45,7 @@ const JourneyPage = () => {
                 </div>
             </MapProvider>
         </div>
-    )
-}
+    );
+};
 
 export default JourneyPage;
