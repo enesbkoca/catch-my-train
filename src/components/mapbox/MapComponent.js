@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
 import { MapContext } from './MapContext';
 import 'leaflet/dist/leaflet.css';
 import {coordinatesNetherlands} from "../../assets/constants";
 import {createCustomIcon} from "../../utils/helperFunctions";
 
 const MapComponent = () => {
-    const { markers } = useContext(MapContext);
+    const { markers, polylines } = useContext(MapContext);
 
     return (
         <MapContainer center={coordinatesNetherlands} zoom={8} className={"map-container"} zoomControl={false}>
@@ -20,6 +20,15 @@ const MapComponent = () => {
                     position={marker.position}
                     icon={createCustomIcon(marker.color)}
                 ></Marker>
+            ))}
+
+            {polylines.map((polyline, index) => (
+                <Polyline
+                    key={`polyline-${index}`}
+                    positions={polyline.positions}
+                    color={polyline.color || 'blue'}
+                    weight={4}
+                />
             ))}
         </MapContainer>
     );
