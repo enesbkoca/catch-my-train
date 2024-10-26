@@ -1,7 +1,7 @@
 import React from 'react';
-import FriendInputComponent from "../components/FriendInputComponent";
-import MapComponent from "../components/MapComponent";
-import {MapProvider} from "../components/MapContext";
+import FriendInputComponent from "../components/planner/FriendInputComponent";
+import MapComponent from "../components/mapbox/MapComponent";
+import {MapProvider} from "../components/mapbox/MapContext";
 
 const PlannerPage = () => {
     return (

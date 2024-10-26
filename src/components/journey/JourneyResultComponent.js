@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { MapContext } from '../MapContext';
+import { MapContext } from '../mapbox/MapContext';
 import { updateJourneyMarkers } from "../../utils/helperFunctions";
 import { FriendRides } from "./FriendRides";
 import {MeetingDetails} from "./MeetingDetails";

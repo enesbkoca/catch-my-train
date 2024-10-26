@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, VStack, Heading, Text, Button, useBreakpointValue, SimpleGrid } from '@chakra-ui/react';
-import MapComponent from "../components/MapComponent";
-import { MapProvider } from "../components/MapContext";
+import MapComponent from "../components/mapbox/MapComponent";
+import { MapProvider } from "../components/mapbox/MapContext";
 
 const HomePage = () => {
     return (
