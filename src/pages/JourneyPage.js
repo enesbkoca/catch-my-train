@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import MapComponent from "../components/MapComponent";
 import {MapProvider} from "../components/MapContext";
-import JourneyResultComponent from "../components/JourneyResultComponent";
+import JourneyResultComponent from "../components/journey/JourneyResultComponent";
 
 const JourneyPage = () => {
     const location = useLocation();
