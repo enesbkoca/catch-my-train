@@ -26,7 +26,7 @@ const JourneyPage = () => {
     }, [journeyResults, navigate]);
 
     if (isRedirecting) {
-        return <RedirectComponent/>;
+        return <RedirectComponent message={"No journey planned yet. Taking you back to the planner..."}/>;
     }
 
     return (
