@@ -136,9 +136,10 @@ export const getColorByFriendId = (friend_id, background = false) => {
     return background ? backgroundColor : markerColor;
 };
 
-export const updateJourneyMarkers = (journeyResult, stations, addMarker, removeMarker, markers, addPolyline) => {
-    // Clear existing markers
-    markers.forEach(marker => removeMarker(marker.friend_id));
+export const updateJourneyMarkers = (journeyResult, stations, addMarker, markers, addPolyline, removeAllMapArtifacts) => {
+    // Clear all existing map artifacts, including markers and polylines
+    removeAllMapArtifacts();
+
 
     // Add marker for meeting point
     const meetingPosition = getCoordinates(journeyResult.meetingOptions.meeting_station, stations);

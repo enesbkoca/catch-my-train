@@ -19,6 +19,10 @@ export const MapProvider = ({ children }) => {
         fetchStations();
     }, []);
 
+    const removeAllMapArtifacts = () => {
+        setPolylines([]);
+        setMarkers([]);
+    }
 
     const addPolyline = (positions, color = 'blue') => {
         setPolylines(prevPolylines => [
@@ -49,7 +53,7 @@ export const MapProvider = ({ children }) => {
     };
 
     return (
-        <MapContext.Provider value={{ markers, setMarkers, addMarker, removeMarker, updateMarker, stations, polylines, addPolyline }}>
+        <MapContext.Provider value={{ markers, setMarkers, addMarker, removeMarker, updateMarker, stations, polylines, addPolyline, removeAllMapArtifacts }}>
             {children}
         </MapContext.Provider>
     );
