@@ -9,7 +9,7 @@ const pulse = keyframes`
 
 export const RedirectComponent = ({ message }) => {
     return (
-        <Center height="100vh">
+        <Center height="100vh" className="loading_spin">
             <VStack
                 spacing={6}
                 p={10}

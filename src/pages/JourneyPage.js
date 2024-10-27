@@ -25,9 +25,6 @@ const JourneyPage = () => {
         }
     }, [journeyResults, navigate]);
 
-    if (isRedirecting) {
-        return <RedirectComponent message={"No journey planned yet. Taking you back to the planner..."}/>;
-    }
 
     return (
         <div>
@@ -39,6 +36,11 @@ const JourneyPage = () => {
                         </div>
                     )}
 
+                    {isRedirecting &&
+                        <div>
+                            <RedirectComponent message={"No journey planned yet. Taking you back to the planner..."}/>
+                        </div>
+                    }
                     <div className="MapComponent">
                         <MapComponent/>
                     </div>

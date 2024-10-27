@@ -1,6 +1,7 @@
-import computeJourney from "./computeJourney";
 import React from "react";
+
 import {coordinatesNetherlands} from "../assets/constants";
+
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -72,14 +73,6 @@ export const getDurationDifference = (meetingOptions) => {
 
     const diffStr = (diff >= 0) ? "+" : "";
     return diffStr + diff.toString();
-};
-
-export const handleSubmit = async (friends, meetingOptions, navigate) => {
-    // Await the async computeJourney function
-    const journeyResults = await computeJourney(friends, meetingOptions);
-
-    // Navigate to the '/journey' page and pass the journey results
-    navigate('/journey', { state: { journeyResults } });
 };
 
 export const updateFriendInputMarkers = (friends, stations, markers, addMarker, removeMarker, updateMarker) => {

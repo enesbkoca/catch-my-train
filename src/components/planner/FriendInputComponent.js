@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { MapContext } from '../mapbox/MapContext';
 import {
     getOneHourAheadTime,
@@ -8,14 +7,12 @@ import {
     renderStationOptions,
     removeFriend,
     addFriend,
-    handleSubmit,
     handleMeetingChange,
     adjustToLocalTime
 } from "../../utils/helperFunctions";
 import { Box, Button, Input, Select, VStack, HStack, Divider, Text } from '@chakra-ui/react';
 
-const FriendInputComponent = () => {
-    const navigate = useNavigate();
+const FriendInputComponent = ({ onSubmit }) => {
     const { markers, addMarker, removeMarker, updateMarker, stations } = useContext(MapContext);
     const [friends, setFriends] = useState([
         { name: 'Jack', station: 'Amsterdam Centraal', friend_id: 0 },
@@ -104,7 +101,7 @@ const FriendInputComponent = () => {
                 <HStack justify="center">
                     <Button
                         colorScheme="blue" // Softer color for the submit button
-                        onClick={() => handleSubmit(friends, meetingOptions, navigate)}
+                        onClick={() => onSubmit(friends, meetingOptions)}
                     >
                         Plan the perfect journey
                     </Button>
