@@ -7,7 +7,7 @@ const pulse = keyframes`
   100% { transform: scale(1); }
 `;
 
-export const RedirectComponent = () => {
+export const RedirectComponent = ({ message }) => {
     return (
         <Center height="100vh">
             <VStack
@@ -23,7 +23,8 @@ export const RedirectComponent = () => {
                     Hang tight! 🚆
                 </Text>
                 <Text fontSize="lg" color="gray.500">
-                    No journey planned yet. Taking you back to the planner...
+                    {message}
+
                 </Text>
             </VStack>
         </Center>
