@@ -7,7 +7,7 @@ const pulse = keyframes`
   100% { transform: scale(1); }
 `;
 
-export const RedirectComponent = ({ message }) => {
+export const LoadingComponent = ({ message }) => {
     return (
         <Center height="100vh" className="loading_spin">
             <VStack
