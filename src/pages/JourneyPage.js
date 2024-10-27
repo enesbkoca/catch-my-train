@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import MapComponent from "../components/mapbox/MapComponent";
 import {MapProvider} from "../components/mapbox/MapContext";
 import JourneyResultComponent from "../components/journey/JourneyResultComponent";
-import {RedirectComponent} from "../components/Redirect";
+import {LoadingComponent} from "../components/LoadingSpin";
 
 const JourneyPage = () => {
     const location = useLocation();
@@ -38,7 +38,7 @@ const JourneyPage = () => {
 
                     {isRedirecting &&
                         <div>
-                            <RedirectComponent message={"No journey planned yet. Taking you back to the planner..."}/>
+                            <LoadingComponent message={"No journey planned yet. Taking you back to the planner..."}/>
                         </div>
                     }
                     <div className="MapComponent">

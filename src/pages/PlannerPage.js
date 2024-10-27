@@ -4,7 +4,7 @@ import MapComponent from "../components/mapbox/MapComponent";
 import {MapProvider} from "../components/mapbox/MapContext";
 import {useNavigate} from "react-router-dom";
 import computeJourney from "../utils/computeJourney";
-import {RedirectComponent} from "../components/Redirect";
+import {LoadingComponent} from "../components/LoadingSpin";
 
 const PlannerPage = () => {
     const [loading, setLoading] = useState(false); // State to track loading
@@ -15,7 +15,7 @@ const PlannerPage = () => {
         try {
             // Await the async computeJourney function
             const journeyResults = await computeJourney(friends, meetingOptions);
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            await new Promise(resolve => setTimeout(resolve, 1500));
 
             // Navigate to the '/journey' page and pass the journey results
             navigate('/journey', { state: { journeyResults } });
@@ -40,7 +40,7 @@ const PlannerPage = () => {
                 </div>
 
                 {/* Show RedirectComponent when loading */}
-                {loading && <RedirectComponent message="We're preparing your journey..." />}
+                {loading && <LoadingComponent message="We're preparing your journey..." />}
             </MapProvider>
         </div>
     );
