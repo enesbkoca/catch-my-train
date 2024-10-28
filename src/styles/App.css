@@ -84,6 +84,12 @@ html, body {
   z-index: 100;                       /* Places the element above other elements */
 }
 
+.header-logo {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  height: 40px;
+}
 
 .friend-input, .journey-result {
   position: absolute;
