@@ -6,11 +6,12 @@ import { FriendRides } from "./FriendRides";
 import {MeetingDetails} from "./MeetingDetails";
 
 const JourneyResultComponent = ({ journeyResult }) => {
-    const { markers, addMarker, removeMarker, stations, polylines, addPolyline, removeAllMapArtifacts } = useContext(MapContext);
+    const { markers, addMarker, stations, polylines, addPolyline, removeAllMapArtifacts } = useContext(MapContext);
 
     useEffect(() => {
         updateJourneyMarkers(journeyResult, stations, addMarker, markers, addPolyline, removeAllMapArtifacts);
-    }, [journeyResult, stations]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [journeyResult, stations]);
 
     useEffect(() => {
         console.log(polylines);
