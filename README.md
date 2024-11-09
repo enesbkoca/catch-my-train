@@ -14,6 +14,6 @@ Try it out here: [Catch the Train Demo](https://catch-my-train.vercel.app/)
 - [X] Add planner page to plan journeys
 - [X] Add journey page to display created journey
 - [X] Add mock result to compute journey 
-- [ ] Connect the markers on the page
+- [X] Connect the markers on the page
 - [ ] Add logic to call NS API to compute best journey
 - [ ] Focus on specific section on the map (depending on the markers)
