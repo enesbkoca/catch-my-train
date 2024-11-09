@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 const Header = () => {
     return (
         <header className="header">
-            {/*I will help you catch your train :)*/}
             <div className="logo-container">
                 <img src={`${process.env.PUBLIC_URL}/assets/logo_full_white.png`} alt="Logo" className="header-logo"/>
             </div>
