@@ -68,22 +68,6 @@ html, body {
   border-bottom: 2px solid #ffffff;
 }
 
-.loading_spin {
-  position: absolute;                  /* Positions the element relative to its nearest positioned ancestor */
-  top: 0;                             /* Aligns the element to the top of the container */
-  left: 0;                            /* Aligns the element to the left of the container */
-  right: 0;                           /* Aligns the element to the right of the container */
-  bottom: 0;                          /* Aligns the element to the bottom of the container */
-  display: flex;                      /* Uses Flexbox layout */
-  align-items: center;                /* Centers items vertically in the container */
-  justify-content: center;            /* Centers items horizontally in the container */
-  flex-direction: column;             /* Stacks child elements vertically */
-  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
-  color: white;                       /* Sets the text color to white */
-  padding: 10px;                      /* Padding for small screens */
-  z-index: 100;                       /* Places the element above other elements */
-}
-
 .header-logo {
   position: absolute;
   top: 3px;
@@ -98,12 +82,28 @@ html, body {
   background-color: rgba(255, 255, 255, 0.7);
   padding: 10px;
   border-radius: 8px;
-  z-index: 2000;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 95%;
   max-width: 600px;
+}
+
+.loading_spin {
+  position: absolute;                  /* Positions the element relative to its nearest positioned ancestor */
+  top: 0;                             /* Aligns the element to the top of the container */
+  left: 0;                            /* Aligns the element to the left of the container */
+  right: 0;                           /* Aligns the element to the right of the container */
+  bottom: 0;                          /* Aligns the element to the bottom of the container */
+  display: flex;                      /* Uses Flexbox layout */
+  align-items: center;                /* Centers items vertically in the container */
+  justify-content: center;            /* Centers items horizontally in the container */
+  flex-direction: column;             /* Stacks child elements vertically */
+  background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
+  color: white;                       /* Sets the text color to white */
+  padding: 10px;                      /* Padding for small screens */
+  z-index: 1000;                       /* Places the element above other elements */
 }
 
 .row {
