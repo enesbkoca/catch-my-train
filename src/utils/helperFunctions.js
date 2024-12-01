@@ -65,6 +65,8 @@ export const handleMeetingChange = (field, value, prevOptions, setMeetingOptions
 }
 
 export const getDurationDifference = (meetingOptions) => {
+    return "0";
+
     const [hoursPref, minutesPref] = meetingOptions.duration.split(":").map(Number);
     const [hoursActual, minutesActual] = meetingOptions.actual_duration.split(":").map(Number);
     const preferredMinutes = hoursPref * 60 + minutesPref;

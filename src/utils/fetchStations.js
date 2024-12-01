@@ -16,7 +16,8 @@ const GetStations = async () => {
         .filter(station => station.country === 'NL')
         .map(station => ({
             name: station.name_long.replace(/"/g, ''),
-            coordinates: [parseFloat(station.geo_lat), parseFloat(station.geo_lng)]
+            coordinates: [parseFloat(station.geo_lat), parseFloat(station.geo_lng)],
+            code: station.code
         }));
 }
 

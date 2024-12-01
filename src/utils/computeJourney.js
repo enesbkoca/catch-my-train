@@ -1,57 +1,123 @@
 import GetStations from "./fetchStations";
+import mockComputeJourney from "./mockComputeJourney";
 
-const computeJourney = async (friends, meetingOptions) => {
+const API_ENDPOINT = "https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips";
+const API_KEY = process.env.NS_KEY ;
+
+const fetchJourneyData = async(fromStation, toStation, datetime) => {
+    const url = new URL(API_ENDPOINT);
+    url.searchParams.append("fromStation", fromStation);
+    url.searchParams.append("toStation", toStation);
+    url.searchParams.append("datetime", datetime);
+
+    const response = await fetch(url.toString(), {
+        method: "GET",
+        headers: {
+            "Ocp-Apim-Subscription-Key": API_KEY,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to fetch journey data: ${response.statusText}`);
+    }
+
+    return response.json();
+}
+
+
+const computeJourney = async (friends, meetingOptions, mock = false) => {
+    /*
+     * input @param {Array} friends - An array of friend objects, where each object contains details about a friend.
+     * Each friend object has the following structure:
+     *
+     * {
+     *   id: {number} - Unique identifier for the friend,
+     *   name: {string} - Name of the friend,
+     * }
+     *
+     *
+     * input @param {Object} meetingOptions - An object containing meeting options.
+     * meetingOptions has the following structure:
+     *
+     * {
+     *   datetime: {Date} - The date and time of the meeting,
+     *   duration: {string} - The duration of the meeting in HH:MM format
+     * }
+     *
+     *
+     * output @param {Object} modifiedMeetingOptions - An object containing meeting options after computeJourney
+     * modifiedMeetingOptions has the following structure:
+     *
+     * {
+     * @property {string} meeting_station - The station where the meeting will take place
+     * @property {string} actual_duration - The actual duration of the meeting
+     * }
+     *
+     *
+     * output @param {Array} modifiedFriends - An array of friend objects, where each object contains details about a friend.
+     * Each friend object has the following structure:
+     *
+     * {
+     *   id: {number} - Unique identifier for the friend,
+     *   name: {string} - Name of the friend,
+     *   location: {string} - Current location of the friend,
+     *   trainRide: {Array} - Array of train ride objects, each containing:
+     *     {
+     *       ride_departure: {Date} - Departure time of the ride,
+     *       ride_arrival: {Date} - Arrival time of the ride,
+     *       station_departure: {string} - Departure station name,
+     *       station_arrival: {string} - Arrival station name
+     *     },
+     *   departure_time: {Date} - Departure time for the journey,
+     *   arrival_time: {Date} - Arrival time for the journey
+     * }
+     */
+
+    console.log("Input Friends:", friends);
+    console.log("Input Meeting Options:", meetingOptions)   ;
+
+    if (mock) {
+        return mockComputeJourney(friends, meetingOptions);
+    }
 
     const allStations = await GetStations();
 
-    // helper function to get a random station
-    const getRandomStation = () => {
-        const randomIndex = Math.floor(Math.random() * allStations.length);
-        return allStations[randomIndex];
-    };
+    // Map station code to name for convenience
+    const stationMap = Object.fromEntries(allStations.map((station) => [station.code, station.name]));
 
-    const modifiedFriends = friends.map(friend => {
-        // First ride: random departure and arrival stations
-        const firstRideDeparture = getRandomStation();
-        const firstRideArrival = getRandomStation();
+    const datetime = meetingOptions.datetime.toISOString();
+    const modifiedFriends = [];
 
-        // Second ride: starts from first ride's arrival station, ends at Utrecht Centraal
-        const secondRideDeparture = firstRideArrival;
-        const secondRideArrival = {name: "Utrecht Centraal"};
+    for (const friend of friends) {
+        try {
+            const response = await fetchJourneyData(friend.location, meetingOptions.meeting_station, datetime);
+            const trip = response.trips[0]; // Take the first trip as the best option
 
-        return {
-            ...friend, // Keep existing properties of each friend
-            trainRide: [
-                {
-                    ride_departure: new Date(new Date(meetingOptions.datetime).getTime() + (Math.random() * 30 - 15) * 60 * 1000), // Mocked departure time (meetingOptions.time ± 15 minutes)
-                    ride_arrival: new Date(new Date(meetingOptions.datetime).getTime() + 30 * 60 * 1000), // 30 minutes later
-                    station_departure: firstRideDeparture.name,
-                    station_arrival: firstRideArrival.name
-                },
-                {
-                    ride_departure: new Date(new Date(meetingOptions.datetime).getTime() + 40 * 60 * 1000), // Mocked time for second ride
-                    ride_arrival: new Date(new Date(meetingOptions.datetime).getTime() + 70 * 60 * 1000), // 30 minutes later after second ride departure
-                    station_departure: secondRideDeparture.name,
-                    station_arrival: secondRideArrival.name
-                }
-            ],
-            departure_time: meetingOptions.datetime, // Mock departure date (today)
-            arrival_time: new Date(new Date(meetingOptions.datetime).getTime() + 70 * 60 * 1000), // Mocked arrival date (70 mins later)
-        };
-    });
+            const rideDetails = trip.legs.map((leg) => ({
+                ride_departure: new Date(leg.origin.actualDateTime),
+                ride_arrival: new Date(leg.destination.actualDateTime),
+                station_departure: stationMap[leg.origin.stationCode] || leg.origin.name,
+                station_arrival: stationMap[leg.destination.stationCode] || leg.destination.name,
+            }));
 
-    // Modify meetingOptions to add the required fields
+            modifiedFriends.push({
+                ...friend,
+                trainRide: rideDetails,
+                departure_time: new Date(trip.legs[0].origin.actualDateTime),
+                arrival_time: new Date(trip.legs[trip.legs.length - 1].destination.actualDateTime),
+            });
+        } catch (error) {
+            console.error(`Failed to compute journey for friend ${friend.name}: ${error.message}`);
+        }
+    }
+
     const modifiedMeetingOptions = {
-        ...meetingOptions,
-        meeting_station: "Utrecht Centraal", // Meeting station is always Utrecht Centraal
-        actual_duration: (() => {
-            const [hours, minutes] = meetingOptions.duration.split(":").map(Number);
-            const totalMinutes = hours * 60 + minutes + Math.floor(Math.random() * 61) - 30;
-            const newHours = Math.floor(totalMinutes / 60);
-            const newMinutes = totalMinutes % 60;
-            return `${String(newHours).padStart(2, "0")}:${String(newMinutes).padStart(2, "0")}`;
-        })()
+        meeting_station: meetingOptions.meeting_station,
+        actual_duration: meetingOptions.duration, // Adjust if actual trip duration affects it
     };
+
+    console.log("Modified Friends:", modifiedFriends);
+    console.log("Modified Meeting Options:", modifiedMeetingOptions);
 
     // Return the modified objects
     return {friends: modifiedFriends, meetingOptions: modifiedMeetingOptions};
