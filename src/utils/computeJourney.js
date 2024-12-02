@@ -64,7 +64,7 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
 
     const datetime = meetingOptions.datetime.toISOString();
     const modifiedFriends = [];
-    const meetingStation = "Asd" // Utrecht Centraal
+    const meetingStation = "Asd" // Amsterdam Centraal
 
 
     for (const friend of friends) {
@@ -72,7 +72,7 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
             const params = new URLSearchParams();
             params.append('fromStation', reverseStationMap[friend.station]);
             params.append('toStation', meetingStation);
-           params.append('datetime', datetime.replace(/\.\d{3}Z$/, 'Z'));
+           params.append('dateTime', datetime);
 
             console.log("Request params: ", params);
 
