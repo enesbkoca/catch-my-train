@@ -1,16 +1,13 @@
-const API_ENDPOINT = "https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips";
-const API_KEY = process.env.NS_KEY ;
-
 export default async function handler(req, res) {
     const { query } = req;
     const { fromStation, toStation, datetime } = query;
 
-    const url = API_ENDPOINT + `?fromStation=${fromStation}&toStation=${toStation}&datetime=${datetime}`;
+    const url = `https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips?fromStation=${fromStation}&toStation=${toStation}&datetime=${datetime}`;
 
     try {
         const response = await fetch(url, {
             headers: {
-                'Ocp-Apim-Subscription-Key': API_KEY, // Replace with your NS API key
+                'Ocp-Apim-Subscription-Key': process.env.NS_KEY, // Replace with your NS API key
             },
         });
 
