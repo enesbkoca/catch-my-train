@@ -1,7 +1,8 @@
 export default async function handler(req, res) {
     const { query } = req;
     const { fromStation, toStation, datetime } = query;
-
+    console.log("This is the query:")
+    console.log(query)
     const url = `https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips?fromStation=${fromStation}&toStation=${toStation}&datetime=${datetime}`;
 
     try {
