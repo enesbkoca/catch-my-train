@@ -63,10 +63,12 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
 
     const datetime = meetingOptions.datetime.toISOString();
     const modifiedFriends = [];
+    const meetingStation = "Out" // Utrecht Centraal
+
 
     for (const friend of friends) {
         try {
-            const response = await fetch(`/api/proxy?fromStation=${friend.station}&toStation=${Out}&datetime=${datetime}`);
+            const response = await fetch(`/api/proxy?fromStation=${friend.station}&toStation=${meetingStation}&datetime=${datetime}`);
             const data = await response.json();
             const trip = data.trips[0];
 
