@@ -1,13 +1,13 @@
 export default async function handler(req, res) {
-    const { fromStation, toStation, datetime } = req.query;
+    const { fromStation, toStation, dateTime } = req.query;
 
-    console.log("Received Query Parameters:", { fromStation, toStation, datetime });
+    console.log("Received Query Parameters:", { fromStation, toStation, dateTime });
 
-    if (!fromStation || !toStation || !datetime) {
+    if (!fromStation || !toStation || !dateTime) {
         return res.status(400).json({ error: "Missing required query parameters" });
     }
 
-    const url = `https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips?fromStation=${fromStation}&toStation=${toStation}&datetime=${datetime}`;
+    const url = `https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips?fromStation=${fromStation}&toStation=${toStation}&dateTime=${dateTime}`;
 
     try {
         const response = await fetch(url, {

@@ -64,7 +64,7 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
 
     const datetime = meetingOptions.datetime.toISOString();
     const modifiedFriends = [];
-    const meetingStation = "Asd" // Amsterdam Centraal
+    const meetingStation = "Ut" // Utrecht Centraal
 
 
     for (const friend of friends) {
