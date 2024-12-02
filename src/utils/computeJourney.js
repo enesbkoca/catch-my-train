@@ -1,30 +1,6 @@
 import GetStations from "./fetchStations";
 import mockComputeJourney from "./mockComputeJourney";
 
-const API_ENDPOINT = "https://gateway.apiportal.ns.nl/reisinformatie-api/api/v3/trips";
-const API_KEY = process.env.NS_KEY ;
-
-const fetchJourneyData = async(fromStation, toStation, datetime) => {
-    const url = new URL(API_ENDPOINT);
-    url.searchParams.append("fromStation", fromStation);
-    url.searchParams.append("toStation", toStation);
-    url.searchParams.append("datetime", datetime);
-
-    const response = await fetch(url.toString(), {
-        method: "GET",
-        headers: {
-            "Ocp-Apim-Subscription-Key": API_KEY,
-        },
-    });
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch journey data: ${response.statusText}`);
-    }
-
-    return response.json();
-}
-
-
 const computeJourney = async (friends, meetingOptions, mock = false) => {
     /*
      * input @param {Array} friends - An array of friend objects, where each object contains details about a friend.
@@ -90,7 +66,9 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
 
     for (const friend of friends) {
         try {
-            const response = await fetchJourneyData(friend.location, meetingOptions.meeting_station, datetime);
+            const response = await fetch(`/api/proxy?fromStation=${friend.location}&toStation=${meetingOptions.meeting_station}&datetime=${datetime}`);
+            // const data = await response.json();
+
             const trip = response.trips[0]; // Take the first trip as the best option
 
             const rideDetails = trip.legs.map((leg) => ({
