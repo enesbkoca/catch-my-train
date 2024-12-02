@@ -68,7 +68,17 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
 
     for (const friend of friends) {
         try {
-            const response = await fetch(`/api/proxy?fromStation=${friend.station}&toStation=${meetingStation}&datetime=${datetime}`);
+            const params = new URLSearchParams();
+            params.append('fromStation', friend.station);
+            params.append('toStation', meetingStation);
+            params.append('datetime', datetime);
+
+            console.log("Request params: ", params);
+
+            const response = await fetch(`/api/proxy?${params.toString()}`, {
+                method: 'GET',
+            });
+
             const data = await response.json();
             const trip = data.trips[0];
 
