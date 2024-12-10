@@ -65,11 +65,14 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
     const reverseStationMap = Object.fromEntries(allStations.map((station) => [station.name, station.code]));
 
     const datetime = meetingOptions.datetime.toISOString();
-    const meetingStation = "Ut" // Utrecht Centraal
+
     // Add trip information
-    friends = await addTripInfo(friends, meetingStation, datetime, reverseStationMap);
+    friends = await addTripInfo(friends, meetingOptions.meetingStation, datetime, reverseStationMap);
 
     friends = findOptimumTripIdx(friends);
+
+    console.log("friends after computeJourney: ", friends);
+    console.log("meetingOptions after computeJourney: ", meetingOptions);
 
     // Return the updated objects
     return {friends: friends, meetingOptions: meetingOptions};

@@ -138,9 +138,9 @@ export const updateJourneyMarkers = (journeyResult, stations, addMarker, markers
 
 
     // Add marker for meeting point
-    const meetingPosition = getCoordinates(journeyResult.meetingOptions.meeting_station, stations);
+    const meetingPosition = getCoordinates(journeyResult.meetingOptions.meetingStation, stations);
     addMarker({
-        station_name: journeyResult.meetingOptions.meeting_station,
+        station_name: journeyResult.meetingOptions.meetingStation,
         position: meetingPosition
     }, "gold");
 

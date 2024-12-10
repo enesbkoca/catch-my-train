@@ -43,7 +43,7 @@ const mockComputeJourney = async (friends, meetingOptions) => {
 // Modify meetingOptions to add the required fields
     const modifiedMeetingOptions = {
         ...meetingOptions,
-        meeting_station: "Utrecht Centraal", // Meeting station is always Utrecht Centraal
+        meetingStation: "Utrecht Centraal", // Meeting station is always Utrecht Centraal
         actual_duration: (() => {
             const [hours, minutes] = meetingOptions.duration.split(":").map(Number);
             const totalMinutes = hours * 60 + minutes + Math.floor(Math.random() * 61) - 30;

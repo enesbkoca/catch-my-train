@@ -30,7 +30,7 @@ export const MeetingDetails = ({meetingOptions}) => {
                         })}
                     </Text>
                     <Text fontSize="md" color="gray.600">
-                        @ {meetingOptions.meeting_station}
+                        @ {meetingOptions.meetingStation}
                     </Text>
                 </Box>
         
@@ -39,7 +39,7 @@ export const MeetingDetails = ({meetingOptions}) => {
                         Duration:
                     </Text>
                     <Text fontSize="md" color="gray.700">
-                        {meetingOptions.actual_duration} min
+                        {meetingOptions.duration} min
                         {getDurationDifference(meetingOptions) !== 0 && (
                             <Text as="span" color="gray.500">
                                 &nbsp;({getDurationDifference(meetingOptions)} min)

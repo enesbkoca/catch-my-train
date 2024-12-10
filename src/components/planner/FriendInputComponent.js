@@ -20,7 +20,8 @@ const FriendInputComponent = ({ onSubmit }) => {
     ]);
     const [meetingOptions, setMeetingOptions] = useState({
         datetime: getOneHourAheadTime(),
-        duration: '03:00'
+        duration: '03:00',
+        meetingStation: 'Utrecht Centraal'
     });
 
     useEffect(() => {
@@ -92,8 +93,8 @@ const FriendInputComponent = ({ onSubmit }) => {
                 <HStack spacing={3}>
                     <Select
                         id="meeting-station"
-                        value={meetingOptions.meeting_station}
-                        onChange={(e) => handleMeetingChange("meeting_station", e.target.value, meetingOptions, setMeetingOptions)}
+                        value={meetingOptions.meetingStation}
+                        onChange={(e) => handleMeetingChange("meetingStation", e.target.value, meetingOptions, setMeetingOptions)}
                         placeholder="Meeting Station"
                     >
                         {renderStationOptions(stations)}
