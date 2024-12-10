@@ -25,6 +25,8 @@ const FriendInputComponent = ({ onSubmit }) => {
     });
 
     useEffect(() => {
+        // TODO: Also display the meeting station marker
+
         updateFriendInputMarkers(friends, stations, markers, addMarker, removeMarker, updateMarker);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [friends, stations]);
