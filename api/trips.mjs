@@ -1,3 +1,6 @@
+import tripUtils from '../src/utils/tripResponseUtils.js';
+const { addDepartureArrivalInfo, filterTripData } = tripUtils;
+
 export default async function handler(req, res) {
     if (req.method === 'GET') {
 
@@ -24,18 +27,12 @@ export default async function handler(req, res) {
 
             const data = await response.json();
             const tripData = data["trips"];
-            const filteredTrips = tripData.map(item => ({
-                idx: item.idx,
-                legs: item.legs.map(leg => ({
-                    idx: leg.idx,
-                    origin: leg.origin,
-                    destination: leg.destination,
-                    stops: leg.stops
-                }))
-            }));
+
+            const filteredTrips = tripData.map(item => filterTripData(item));
+            const enrichedTrips = filteredTrips.map(item => addDepartureArrivalInfo(item));
 
 
-            return res.status(200).json(filteredTrips);
+            return res.status(200).json(enrichedTrips);
 
         } catch (error) {
             console.error("Proxy error:", error.stack);

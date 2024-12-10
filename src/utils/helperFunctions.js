@@ -136,6 +136,7 @@ export const updateJourneyMarkers = (journeyResult, stations, addMarker, markers
     removeAllMapArtifacts();
 
 
+
     // Add marker for meeting point
     const meetingPosition = getCoordinates(journeyResult.meetingOptions.meeting_station, stations);
     addMarker({
@@ -144,28 +145,27 @@ export const updateJourneyMarkers = (journeyResult, stations, addMarker, markers
     }, "gold");
 
     journeyResult.friends.forEach(friend => {
-        const friendPositions = []; // Track each friend’s journey positions
+        const optimumTrip = friend.trips.find(trip => trip.idx === friend.optimumTripIdx);
+        const tripPositions = []; // Track each friend’s journey positions
 
-        friend.trainRide.forEach(ride => {
-            const position = getCoordinates(ride.station_departure, stations);
+        optimumTrip.legs.forEach(leg => {
+            const position = getCoordinates(leg.origin.name, stations);
 
             // Add marker for each station
             addMarker({
                 friend_id: friend.friend_id,
-                station_name: ride.station_departure,
+                station_name: leg.origin.name,
                 position: position
             });
 
             // Store position for drawing polyline
-            friendPositions.push(position);
+            tripPositions.push(position);
         });
 
-        friendPositions.push(meetingPosition);
+        tripPositions.push(meetingPosition);
         // Add polyline for the friend’s journey using addPolyline
-        addPolyline(friendPositions, getColorByFriendId(friend.friend_id));
+        addPolyline(tripPositions, getColorByFriendId(friend.friend_id));
     });
-
-
 };
 
 export const renderStationOptions = (stations) => {
@@ -180,3 +180,4 @@ export const adjustToLocalTime = (utcDate) => {
     const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000)); // Adjust for timezone offset
     return localDate.toISOString().slice(0, 16); // Format to "YYYY-MM-DDTHH:MM"
 };
+

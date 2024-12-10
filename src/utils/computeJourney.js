@@ -1,5 +1,6 @@
 import GetStations from "./fetchStations";
 import mockComputeJourney from "./mockComputeJourney";
+import {addTripInfo, findOptimumTripIdx} from "./tripResponseUtils";
 
 const computeJourney = async (friends, meetingOptions, mock = false) => {
     /*
@@ -9,6 +10,7 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
      * {
      *   id: {number} - Unique identifier for the friend,
      *   name: {string} - Name of the friend,
+     *   station: {string} - Station code of friend
      * }
      *
      *
@@ -59,58 +61,18 @@ const computeJourney = async (friends, meetingOptions, mock = false) => {
     const allStations = await GetStations();
 
     // Map station code to name for convenience
-    const stationMap = Object.fromEntries(allStations.map((station) => [station.code, station.name]));
+    // const stationMap = Object.fromEntries(allStations.map((station) => [station.code, station.name]));
     const reverseStationMap = Object.fromEntries(allStations.map((station) => [station.name, station.code]));
 
     const datetime = meetingOptions.datetime.toISOString();
-    const modifiedFriends = [];
     const meetingStation = "Ut" // Utrecht Centraal
+    // Add trip information
+    friends = await addTripInfo(friends, meetingStation, datetime, reverseStationMap);
 
+    friends = findOptimumTripIdx(friends);
 
-    for (const friend of friends) {
-        try {
-            const params = new URLSearchParams();
-            params.append('fromStation', reverseStationMap[friend.station]);
-            params.append('toStation', meetingStation);
-           params.append('dateTime', datetime);
-
-            console.log("Request params: ", params);
-
-            const response = await fetch(`/api/proxy?${params.toString()}`, {
-                method: 'GET',
-            });
-
-            const data = await response.json();
-            const trip = data.trips[0];
-
-            const rideDetails = trip.legs.map((leg) => ({
-                ride_departure: new Date(leg.origin.actualDateTime),
-                ride_arrival: new Date(leg.destination.actualDateTime),
-                station_departure: stationMap[leg.origin.stationCode] || leg.origin.name,
-                station_arrival: stationMap[leg.destination.stationCode] || leg.destination.name,
-            }));
-
-            modifiedFriends.push({
-                ...friend,
-                trainRide: rideDetails,
-                departure_time: new Date(trip.legs[0].origin.actualDateTime),
-                arrival_time: new Date(trip.legs[trip.legs.length - 1].destination.actualDateTime),
-            });
-        } catch (error) {
-            console.error(`Failed to compute journey for friend ${friend.name}: ${error.message}`);
-        }
-    }
-
-    const modifiedMeetingOptions = {
-        meeting_station: meetingOptions.meeting_station,
-        actual_duration: meetingOptions.duration, // Adjust if actual trip duration affects it
-    };
-
-    console.log("Modified Friends:", modifiedFriends);
-    console.log("Modified Meeting Options:", modifiedMeetingOptions);
-
-    // Return the modified objects
-    return {friends: modifiedFriends, meetingOptions: modifiedMeetingOptions};
+    // Return the updated objects
+    return {friends: friends, meetingOptions: meetingOptions};
 };
 
 export default computeJourney;
