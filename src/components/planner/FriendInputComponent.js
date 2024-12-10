@@ -56,7 +56,8 @@ const FriendInputComponent = ({ onSubmit }) => {
                             {renderStationOptions(stations)}
                         </Select>
                         <Button
-                            colorScheme="orange" // Softer color for the remove button
+                            style={{ aspectRatio: 1 }}
+                            colorScheme="orange"
                             onClick={() => removeFriend(index, friends, setFriends)}
                             isDisabled={friends.length < 3}
                         >
@@ -64,15 +65,39 @@ const FriendInputComponent = ({ onSubmit }) => {
                         </Button>
                     </HStack>
                 ))}
-
+                    {friends.length < 5 && (
+                        <HStack key={`hidden-0`} spacing={3} align="center">
+                            <Input
+                                id="hidden-input"
+                                size="md"
+                                style={{ visibility: 'hidden' }}
+                            />
+                            <Button
+                                style={{ aspectRatio: 1 }}
+                                colorScheme="teal" // Softer color for the add button
+                                onClick={() => addFriend(friends, setFriends, addMarker)}
+                            >
+                                +
+                            </Button>
+                        </HStack>
+                    )}
                 <Divider />
 
                 <HStack spacing={3} justify="space-between">
+                    <Text fontWeight="bold">Meeting Station</Text>
                     <Text fontWeight="bold">Date & Time</Text>
                     <Text fontWeight="bold">Duration</Text>
                 </HStack>
 
                 <HStack spacing={3}>
+                    <Select
+                        id="meeting-station"
+                        value={meetingOptions.meeting_station}
+                        onChange={(e) => handleMeetingChange("meeting_station", e.target.value, meetingOptions, setMeetingOptions)}
+                        placeholder="Meeting Station"
+                    >
+                        {renderStationOptions(stations)}
+                    </Select>
                     <Input
                         type="datetime-local"
                         id="meeting-datetime"
@@ -89,13 +114,6 @@ const FriendInputComponent = ({ onSubmit }) => {
                         variant="filled"
                         size="md"
                     />
-                    <Button
-                        colorScheme="teal" // Softer color for the add button
-                        onClick={() => addFriend(friends, setFriends, addMarker)}
-                        isDisabled={friends.length >= 5}
-                    >
-                        +
-                    </Button>
                 </HStack>
 
                 <HStack justify="center">

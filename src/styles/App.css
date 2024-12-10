@@ -122,51 +122,6 @@ html, body {
   margin-top: -10px;
 }
 
-.row input, select {
-  width: calc(70% - 10px);
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.row label {
-  margin-bottom: 2px;
-}
-
-.row button {
-  width: 10%;
-  min-width: 50px;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.row button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.add-button, .remove-button {
-  width: 15%;
-  min-width: 50px;
-  font-size: 18px;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.add-button {
-  background-color: green;
-}
-
-.remove-button {
-  background-color: darkred;
-}
-
 .submit-button {
   width: 100% !important;
   background-color: #007bff;
