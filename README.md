@@ -17,6 +17,7 @@ Try it out here: [Catch the Train Demo](https://catch-my-train.vercel.app/)
 - [X] Connect the markers on the page
 - [X] Add logic to call NS API to compute best journey combination
 - [X] Give user to specify meeting station
+- [ ] Create a shareable journey link
 - [ ] Give option to open the route in NS using NS link
 - [ ] Give the option to choose from multiple trip options, including how much they differ from the user input (departure, duration, etc)
 - [ ] Fix timezone conversion on the webpage
