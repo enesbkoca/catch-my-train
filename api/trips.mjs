@@ -1,10 +1,15 @@
+import { createClient } from '@supabase/supabase-js';
+
 import tripUtils from '../src/utils/tripResponseUtils.js';
 const { addDepartureArrivalInfo, filterTripData } = tripUtils;
 
-export default async function handler(req, res) {
-    if (req.method === 'GET') {
 
-        const { fromStation, toStation, dateTime } = req.query;
+const supabase = createClient(process.env.SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+
+export default async function handler(req, res) {
+    if (req.method === 'POST') {
+
+        const { fromStation, toStation, dateTime } = req.body;
 
         console.log("Received Query Parameters:", { fromStation, toStation, dateTime });
 
@@ -25,12 +30,16 @@ export default async function handler(req, res) {
                 return res.status(response.status).json({ error: response.statusText });
             }
 
-            const data = await response.json();
-            const tripData = data["trips"];
+            const tripData = (await response.json())["trips"];
 
             const filteredTrips = tripData.map(item => filterTripData(item));
             const enrichedTrips = filteredTrips.map(item => addDepartureArrivalInfo(item));
 
+            const { data, error } = await supabase.from('journeys').insert({
+                journey_result: enrichedTrips
+            });
+
+            console.log("Supabase insert status:", { data, error });
 
             return res.status(200).json(enrichedTrips);
 
@@ -39,7 +48,7 @@ export default async function handler(req, res) {
             return res.status(500).json({ error: error.message });
         }
     } else {
-        res.setHeader('Allow', ['GET']);
+        res.setHeader('Allow', ['POST']);
         res.status(405).json({ success: false, message: `Method ${req.method} not allowed` });
     }
 }

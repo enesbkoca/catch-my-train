@@ -1,13 +1,16 @@
-const addTripInfo = async (friends, meetingStation, datetime, reverseStationMap) => {
+const createTrip = async (friends, meetingStation, datetime, reverseStationMap) => {
     for (const friend of friends) {
         try {
-            const params = new URLSearchParams();
-            params.append('fromStation', reverseStationMap[friend.station]);
-            params.append('toStation', meetingStation);
-            params.append('dateTime', datetime);
-
-            const response = await fetch(`/api/trips?${params.toString()}`, {
-                method: 'GET',
+          const response = await fetch('/api/trips', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fromStation: reverseStationMap[friend.station],
+                    toStation: meetingStation,
+                    dateTime: datetime
+                })
             });
 
             friend.trips = await response.json();
@@ -54,4 +57,4 @@ const findOptimumTripIdx = (friends) => {
     }));
 }
 
-module.exports = { addTripInfo, filterTripData, addDepartureArrivalInfo, findOptimumTripIdx };
+module.exports = { createTrip, filterTripData, addDepartureArrivalInfo, findOptimumTripIdx };

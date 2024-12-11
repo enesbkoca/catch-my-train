@@ -181,3 +181,9 @@ export const adjustToLocalTime = (utcDate) => {
     return localDate.toISOString().slice(0, 16); // Format to "YYYY-MM-DDTHH:MM"
 };
 
+export const iso8601ToLocalTime = (datetimeStr) => {
+    const utcDate = new Date(Date.parse(datetimeStr));
+    const localDate = new Date(utcDate.getTime() - (utcDate.getTimezoneOffset() * 60000)); // Adjust for timezone offset
+
+    return localDate.toLocaleString('en-GB', {hour: "numeric", minute: "numeric"})
+}

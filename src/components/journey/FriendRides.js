@@ -1,7 +1,7 @@
 import {Box, Divider, HStack, Text, VStack} from "@chakra-ui/react";
 import React from "react";
 import {FaArrowRight} from "react-icons/fa";
-import {getColorByFriendId} from "../../utils/helperFunctions";
+import {getColorByFriendId, iso8601ToLocalTime} from "../../utils/helperFunctions";
 
 export const FriendRides = ({friends}) => {
     return(<VStack spacing={3} align="stretch">
@@ -46,8 +46,7 @@ const RenderRides = ({ trips, optimumTripIdx }) => {
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{firstRide.origin.name}</Text>
                 <Text fontSize="sm" color="gray.500">
-                    {firstRide.origin.plannedDateTime}
-                    {/*{firstRide.origin.plannedDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}*/}
+                    {iso8601ToLocalTime(firstRide.origin.plannedDateTime)}
                 </Text>
             </VStack>
 
@@ -58,13 +57,11 @@ const RenderRides = ({ trips, optimumTripIdx }) => {
                         <Text fontSize="md" fontWeight="bold" color="gray.800">{ride.destination.name}</Text>
                         <HStack justify="space-between" width="100%">
                             <Text fontSize="sm" color="gray.500">
-                                {ride.destination.plannedDateTime}
-                                {/*{ride.destination.plannedDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}*/}
+                                {iso8601ToLocalTime(ride.destination.plannedDateTime)}
                             </Text>
                             {optimumTrip[index + 1] && (
                                 <Text fontSize="sm" color="gray.500">
-                                    {optimumTrip[index + 1].origin.plannedDateTime}
-                                    {/*{optimumTrip[index + 1].origin.plannedDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}*/}
+                                    {iso8601ToLocalTime(optimumTrip[index + 1].origin.plannedDateTime)}
                                 </Text>
                             )}
                         </HStack>
@@ -76,8 +73,8 @@ const RenderRides = ({ trips, optimumTripIdx }) => {
             <VStack spacing={1} align="center">
                 <Text fontSize="md" fontWeight="bold" color="gray.800">{lastRide.destination.name}</Text>
                 <Text fontSize="sm" color="gray.500">
-                    {lastRide.destination.plannedDateTime}
-                    {/*{lastRide.destination.plannedDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}*/}
+                    {iso8601ToLocalTime(lastRide.destination.plannedDateTime)}
+
                 </Text>
             </VStack>
         </HStack>
