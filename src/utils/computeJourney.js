@@ -29,7 +29,7 @@ const computeJourney = async (friends, meetingOptions) => {
         const updatedFriends = await response.json();
 
         return {
-            friends: updatedFriends.data.friends,
+            friends: updatedFriends.data.trip_information,
             meetingOptions: meetingOptions,
             tripId: updatedFriends.data.trip_id
         }

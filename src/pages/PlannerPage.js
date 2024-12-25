@@ -21,6 +21,8 @@ const PlannerPage = () => {
 
             const tripId = journeyResults.tripId;
 
+            console.log('Journey Results:', journeyResults);
+
             // Navigate to the '/journey' page and pass the journey results
             navigate(`/journey/${tripId}`, { state: { journeyResults } });
 

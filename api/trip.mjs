@@ -59,9 +59,14 @@ export default async function handler(req, res) {
         const { data, error } = await supabase
             .from('trips')
             .insert({trip_information: tripInformation})
-            .select('*');
+            .select()
+            .single();
 
         console.log("Supabase insert status:", { data, error });
+
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
 
         return res.status(200).json({ data });
 
@@ -72,7 +77,8 @@ export default async function handler(req, res) {
         const { data, error } = await supabase
             .from('trips')
             .select()
-            .eq('trip_id', tripId);
+            .eq('trip_id', tripId)
+            .single();
 
         console.log("Supabase fetch status:", { data, error });
 
