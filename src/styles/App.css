@@ -3,6 +3,7 @@ html, body {
   padding: 0;
   height: 100%;
   overflow: auto;
+  font-family: "Montserrat", serif;
 }
 
 .App {
@@ -57,15 +58,27 @@ html, body {
 }
 
 .nav-link {
+  position: relative;
   margin: 0 5rem;
   text-decoration: none;
   color: #f0f0f0;
   font-size: 1.2rem;
+  transition: color 0.3s ease;
 }
 
-.nav-link:hover {
-  color: #ffffff;
-  border-bottom: 2px solid #ffffff;
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background-color: #ffffff;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }
 
 .header-logo {

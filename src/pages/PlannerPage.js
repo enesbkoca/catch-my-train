@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
+import {useNavigate} from "react-router-dom";
+
 import FriendInputComponent from "../components/planner/FriendInputComponent";
 import MapComponent from "../components/mapbox/MapComponent";
 import {MapProvider} from "../components/mapbox/MapContext";
-import {useNavigate} from "react-router-dom";
-import computeJourney from "../utils/computeJourney";
 import {LoadingComponent} from "../components/LoadingSpin";
+
+import computeJourney from "../utils/computeJourney";
 
 const PlannerPage = () => {
     const [loading, setLoading] = useState(false); // State to track loading

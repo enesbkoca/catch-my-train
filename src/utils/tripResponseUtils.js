@@ -1,26 +1,3 @@
-const createTrip = async (friends, meetingStation, datetime, reverseStationMap) => {
-    for (const friend of friends) {
-        try {
-          const response = await fetch('/api/trips', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    fromStation: reverseStationMap[friend.station],
-                    toStation: meetingStation,
-                    dateTime: datetime
-                })
-            });
-
-            friend.trips = await response.json();
-        } catch (error) {
-            console.error(`Failed to compute journey for friend ${friend.name}: ${error.message}`);
-        }
-    }
-
-    return friends;
-}
 
 const filterTripData = (item) => ({
     idx: item.idx,
@@ -57,4 +34,4 @@ const findOptimumTripIdx = (friends) => {
     }));
 }
 
-module.exports = { createTrip, filterTripData, addDepartureArrivalInfo, findOptimumTripIdx };
+module.exports = { filterTripData, addDepartureArrivalInfo, findOptimumTripIdx };

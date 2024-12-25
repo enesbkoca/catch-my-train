@@ -1,33 +1,38 @@
 import GetStations from "./fetchStations";
-import mockComputeJourney from "./mockComputeJourney";
-import {createTrip, findOptimumTripIdx} from "./tripResponseUtils";
-
-const computeJourney = async (friends, meetingOptions, mock = false) => {
+const computeJourney = async (friends, meetingOptions) => {
     console.log("Input Friends:", friends);
-    console.log("Input Meeting Options:", meetingOptions)   ;
-
-    if (mock) {
-        return mockComputeJourney(friends, meetingOptions);
-    }
+    console.log("Input Meeting Options:", meetingOptions);
 
     const allStations = await GetStations();
 
     // Map station code to name for convenience
-    // const stationMap = Object.fromEntries(allStations.map((station) => [station.code, station.name]));
     const reverseStationMap = Object.fromEntries(allStations.map((station) => [station.name, station.code]));
 
+    const meetingStation = meetingOptions.meetingStation;
     const datetime = meetingOptions.datetime.toISOString();
 
-    // Add trip information
-    friends = await createTrip(friends, meetingOptions.meetingStation, datetime, reverseStationMap);
+    try {
+        const response = await fetch('/api/trip', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                friends: friends,
+                meetingStation: meetingStation,
+                datetime: datetime,
+                reverseStationMap: reverseStationMap
+            })
+        });
 
-    friends = findOptimumTripIdx(friends);
+        const updatedFriends = await response.json();
 
-    console.log("friends after computeJourney: ", friends);
-    console.log("meetingOptions after computeJourney: ", meetingOptions);
+        return { friends: updatedFriends, meetingOptions: meetingOptions }
 
-    // Return the updated objects
-    return {friends: friends, meetingOptions: meetingOptions};
+    } catch (error) {
+        console.error(`Failed to fetch trips: ${error.message}`)
+        return { friends: friends, meetingOptions: meetingStation }
+    }
 };
 
 export default computeJourney;
