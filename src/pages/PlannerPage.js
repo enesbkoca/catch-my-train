@@ -19,8 +19,11 @@ const PlannerPage = () => {
             const journeyResults = await computeJourney(friends, meetingOptions);
             await new Promise(resolve => setTimeout(resolve, 1500));
 
+            const tripId = journeyResults.tripId;
+
             // Navigate to the '/journey' page and pass the journey results
-            navigate('/journey', { state: { journeyResults } });
+            navigate(`/journey/${tripId}`, { state: { journeyResults } });
+
         } catch (error) {
             console.error('Error during journey computation:', error);
         } finally {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import MapComponent from "../components/mapbox/MapComponent";
 import {MapProvider} from "../components/mapbox/MapContext";
@@ -9,19 +9,23 @@ import {LoadingComponent} from "../components/LoadingSpin";
 const JourneyPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { id } = useParams();
+
     const journeyResults = location.state?.journeyResults;
     const [isRedirecting, setIsRedirecting] = useState(false);
 
-    useEffect(() => {
+    useEffect(async () => {
         if (!journeyResults) {
-            setIsRedirecting(true);
-            // Delay for 5 seconds, then redirect
-            const redirectTimeout = setTimeout(() => {
-                navigate('/planner');
-            }, 3000);
 
-            // Cleanup timeout on component unmount
-            return () => clearTimeout(redirectTimeout);
+            const response = await fetch(`/api/trip?tripId=${id}`);
+            if (response.status !== 200) {
+                setIsRedirecting(true);
+                const redirectTimeout = setTimeout(() => {
+                    navigate('/planner');
+                }, 3000);
+                return () => clearTimeout(redirectTimeout);
+            }
+            const journey = await response.json();
         }
     }, [journeyResults, navigate]);
 

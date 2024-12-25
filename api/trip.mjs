@@ -76,6 +76,10 @@ export default async function handler(req, res) {
 
         console.log("Supabase fetch status:", { data, error });
 
+        if (error) {
+            return res.status(500).json({ error: error.message });
+        }
+
         return res.status(200).json({ data });
 
     } else {

@@ -1,4 +1,5 @@
 import GetStations from "./fetchStations";
+
 const computeJourney = async (friends, meetingOptions) => {
     console.log("Input Friends:", friends);
     console.log("Input Meeting Options:", meetingOptions);
@@ -27,11 +28,14 @@ const computeJourney = async (friends, meetingOptions) => {
 
         const updatedFriends = await response.json();
 
-        return { friends: updatedFriends, meetingOptions: meetingOptions }
+        return {
+            friends: updatedFriends.data.friends,
+            meetingOptions: meetingOptions,
+            tripId: updatedFriends.data.trip_id
+        }
 
     } catch (error) {
         console.error(`Failed to fetch trips: ${error.message}`)
-        return { friends: friends, meetingOptions: meetingStation }
     }
 };
 
