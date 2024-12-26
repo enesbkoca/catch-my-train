@@ -59,6 +59,10 @@ const fetchAndTransformStations = async () => {
 
 const updateStationsTable = async (supabase) => {
     try {
+        // TODO: Migrate to a proper backend from vercel functions.
+        // Update once a day, or if an error is triggered bcs a station was not found
+        throw new Error("Throwing error, as db operations are done at every call bcs of vercel functions, so fetching results directly from db instead.");
+
         const stations = await fetchAndTransformStations();
 
         // This is to allow upsert to run async in vercel functions, so the function is not killed after response is sent.
@@ -76,7 +80,7 @@ const updateStationsTable = async (supabase) => {
             .select();
 
         console.log("Supabase fetch status:", {
-            firstFewRows: data.slice(0, 3),
+            firstFewRows: data.slice(0, 1),
             totalRows: data.length,
             err,
         });
