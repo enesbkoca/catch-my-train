@@ -14,9 +14,6 @@ export const MapProvider = ({ children }) => {
         const fetchStations = async () => {
             const stationsData = await getStations();
             console.log({message: "Received results from getStations", result: stationsData})
-
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
             setStations(stationsData);
         };
 

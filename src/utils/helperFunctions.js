@@ -30,7 +30,7 @@ export const getCoordinates = (station_name, stations) => {
     // Check if the station is found
     if (station) {
         console.log("Found station with: " + JSON.stringify(station));
-        return station.coordinates;
+        return [station.coordinates.lat, station.coordinates.lng];
     } else {
         // Log a message if default coordinates are used
         console.warn(`Station "${station_name}" not found. Using default coordinates:`, coordinatesNetherlands);
