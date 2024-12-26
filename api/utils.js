@@ -16,7 +16,7 @@ const updateStationsTable = async (supabase) => {
                 longName: station.names.long,
                 mediumName: station.names.medium,
                 shortName: station.names.short,
-                location: station.location
+                coordinates: station.location
             }));
 
         if (stations.length === 0) throw new Error("No stations left in the response");

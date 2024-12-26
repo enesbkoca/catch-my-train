@@ -1,24 +1,15 @@
-import Papa from 'papaparse';
+const getStations = async () => {
+    const response = await fetch('/api/stations');
+    const data = await response.json();
+    const stations = data.stations
 
-const GetStations = async () => {
-    const filePath = process.env.PUBLIC_URL + '/data/stations-2023-09.csv';
+    console.log({ message: 'getStations fetched stations', stations });
 
-    const response = await fetch(filePath);
-    const csvData = await response.text();
-
-
-    const parsedData = Papa.parse(csvData, {
-        header: true,
-        skipEmptyLines: true
-    });
-
-    return parsedData.data
-        .filter(station => station.country === 'NL')
-        .map(station => ({
-            name: station.name_long.replace(/"/g, ''),
-            coordinates: [parseFloat(station.geo_lat), parseFloat(station.geo_lng)],
-            code: station.code
-        }));
+    return stations.map(station => ({
+                name: station.longName,
+                coordinates: station.coordinates,
+                code: station.stationCode
+            }));
 }
 
-export default GetStations;
+export default getStations;

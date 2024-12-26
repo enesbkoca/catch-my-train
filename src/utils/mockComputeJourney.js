@@ -1,8 +1,8 @@
-import GetStations from "./fetchStations";
+import getStations from "./fetchStations";
 
 const mockComputeJourney = async (friends, meetingOptions) => {
 
-    const allStations = await GetStations();
+    const allStations = await getStations();
 
     // helper function to get a random station
     const getRandomStation = () => {
