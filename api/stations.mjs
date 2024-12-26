@@ -27,8 +27,8 @@ const upsertStations = async (supabase, stations) => {
     }
 };
 
-// Fetches stations data from NS API, cleans it, and updates the "stations" table in Supabase.
-const updateStationsTable = async (supabase) => {
+// Fetch stations from NS and transform them into required format
+const fetchAndTransformStations = async () => {
     try {
         const response = await fetch(`https://gateway.apiportal.ns.nl/nsapp-stations/v3`, {
             headers: {
@@ -50,8 +50,18 @@ const updateStationsTable = async (supabase) => {
             }));
 
         if (stations.length === 0) throw new Error("No stations left in the response");
+        return stations;
+    } catch (error) {
+        console.error("Error fetching or transforming station data:", error);
+        throw error;
+    }
+};
 
-        // Update database asynchronously using waitUntil
+const updateStationsTable = async (supabase) => {
+    try {
+        const stations = await fetchAndTransformStations();
+
+        // This is to allow upsert to run async in vercel functions, so the function is not killed after response is sent.
         waitUntil(upsertStations(supabase, stations));
 
         console.log('Returning sanitized station info');
