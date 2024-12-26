@@ -1,12 +1,11 @@
 import { createClient } from '@supabase/supabase-js';
 
-import tripUtils, {findOptimumTripIdx} from '../src/utils/tripResponseUtils.js';
-const { addDepartureArrivalInfo, filterTripData } = tripUtils;
-
-import { generateNSUrl } from "./utils.js";
+import { addDepartureArrivalInfo, filterTripData, findOptimumTripIdx, generateNSUrl, fetchStationsTable } from "./utils.js";
 
 
 const supabase = await createClient(process.env.SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+const stations =  fetchStationsTable(supabase);
+
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
