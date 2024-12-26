@@ -3,7 +3,8 @@ import { waitUntil } from "@vercel/functions";
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
-const updateStationsInDatabase = async (supabase, stations) => {
+// Upserts stations in the Supabase database (deletes existing and inserts new ones)
+const upsertStations = async (supabase, stations) => {
     try {
         await supabase
             .from('stations')
@@ -26,6 +27,7 @@ const updateStationsInDatabase = async (supabase, stations) => {
     }
 };
 
+// Fetches stations data from NS API, cleans it, and updates the "stations" table in Supabase.
 const updateStationsTable = async (supabase) => {
     try {
         const response = await fetch(`https://gateway.apiportal.ns.nl/nsapp-stations/v3`, {
@@ -34,9 +36,9 @@ const updateStationsTable = async (supabase) => {
             },
         });
 
-        let responseObj = await response.json();
+        const fetchedStationData = await response.json();
 
-        const stations = responseObj.payload
+        const stations = fetchedStationData.payload
             .filter(station => station.country === "NL")
             .map(station => ({
                 stationCode: station.id.code,
@@ -50,7 +52,7 @@ const updateStationsTable = async (supabase) => {
         if (stations.length === 0) throw new Error("No stations left in the response");
 
         // Update database asynchronously using waitUntil
-        waitUntil(updateStationsInDatabase(supabase, stations));
+        waitUntil(upsertStations(supabase, stations));
 
         console.log('Returning sanitized station info');
         return stations;
