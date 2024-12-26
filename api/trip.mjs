@@ -1,18 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 
-import { addDepartureArrivalInfo, filterTripData, findOptimumTripIdx, generateNSUrl, fetchStationsTable } from "./utils.js";
+import { addDepartureArrivalInfo, filterTripData, findOptimumTripIdx, generateNSUrl } from "./utils.js";
 
 
 const supabase = await createClient(process.env.SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-const stations =  fetchStationsTable(supabase);
 
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
 
-        const { friends, meetingStation, datetime, reverseStationMap } = req.body;
+        const { friends, meetingStation, datetime } = req.body;
 
-        console.log("Received Query Parameters:", { friends, meetingStation, datetime, reverseStationMap});
+        console.log("Received Query Parameters:", { friends, meetingStation, datetime});
 
         if (!meetingStation || !datetime) {
             return res.status(400).json({ error: "Missing meetingStation or datetime query parameters." });
@@ -24,7 +23,7 @@ export default async function handler(req, res) {
                 return res.status(400).json({ error: "Missing friend.station query parameter." });
             }
 
-            const fromStation = reverseStationMap[friend.station];
+            const fromStation = friend.station;
 
             const apiUrl = generateNSUrl( fromStation, meetingStation, datetime );
 
