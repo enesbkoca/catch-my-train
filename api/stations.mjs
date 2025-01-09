@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import {updateStationsTable} from "./utils.js";
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
 
