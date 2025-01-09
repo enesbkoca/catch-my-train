@@ -40,38 +40,6 @@ const generateNSUrl = (fromStation, toStation, datetime) => {
     return url;
 }
 
-const updateStationsTable = async (supabase) => {
-    try {
-        // TODO: Migrate to a proper backend from vercel functions.
-        // Update once a day, or if an error is triggered bcs a station was not found
-        throw new Error("Throwing error, as db operations are done at every call bcs of vercel functions, so fetching results directly from db instead.");
-
-        const stations = await fetchAndTransformStations();
-
-        // This is to allow upsert to run async in vercel functions, so the function is not killed after response is sent.
-        waitUntil(upsertStations(supabase, stations));
-
-        console.log('Returning sanitized station info');
-        return stations;
-
-    } catch (error) {
-        console.error("Error updating stations table:", error);
-        console.log("Fetching the current table from the DB");
-
-        const { data, err } = await supabase
-            .from('stations')
-            .select();
-
-        console.log("Supabase fetch status:", {
-            firstFewRows: data.slice(0, 1),
-            totalRows: data.length,
-            err,
-        });
-
-        return data;
-    }
-};
-
 // Upserts stations in the Supabase database (deletes existing and inserts new ones)
 const upsertStations = async (supabase, stations) => {
     try {
@@ -126,5 +94,6 @@ const fetchAndTransformStations = async () => {
     }
 };
 
-module.exports = { generateNSUrl, filterTripData, addDepartureArrivalInfo, findOptimumTripIdx, updateStationsTable, upsertStations, fetchAndTransformStations }
+module.exports = { generateNSUrl, filterTripData, addDepartureArrivalInfo,
+    findOptimumTripIdx, upsertStations, fetchAndTransformStations }
 

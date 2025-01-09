@@ -6,8 +6,17 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.NEXT_PUBLIC_
 
 export default async function handler(req, res) {
     if (req.method === 'GET') {
-        const stations = await updateStationsTable(supabase);
-        return res.status(200).json({ stations });
+        const { data, err } = await supabase
+            .from('stations')
+            .select();
+
+        console.log("Supabase fetch status:", {
+            firstFewRows: data.slice(0, 1),
+            totalRows: data.length,
+            err,
+        });
+
+        return res.status(200).json({ stations: data });
     } else {
         res.setHeader('Allow', ['GET']);
         res.status(405).json({ success: false, message: `Method ${req.method} not allowed` });
