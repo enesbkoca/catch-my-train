@@ -5,7 +5,7 @@ import {
     updateFriendInputMarkers,
 } from "../../utils/helperFunctions";
 
-import { Box, Button, VStack, HStack, Divider } from '@chakra-ui/react';
+import { Button, VStack, HStack, Divider } from '@chakra-ui/react';
 import MeetingOptions from "./MeetingOptions";
 import AddFriendButton from "./AddFriendButton";
 import FriendInput from "./FriendInput";

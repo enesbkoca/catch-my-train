@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
-import { HStack, Input, Text, Box } from "@chakra-ui/react"; // Import Box
-import { adjustToLocalTime, handleMeetingChange, renderStationOptions } from "../../utils/helperFunctions";
+import { HStack, Input, Text, Box } from "@chakra-ui/react";
+import { adjustToLocalTime, handleMeetingChange } from "../../utils/helperFunctions";
 
 const MeetingOptions = ({ meetingOptions, setMeetingOptions, stations }) => {
     const options = stations.map(station => ({ value: station.name, label: station.name }));
