@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router-dom";
 
-import FriendInputComponent from "../components/planner/FriendInputComponent";
+import PlannerInput from "../components/planner/PlannerInput";
 import MapComponent from "../components/mapbox/MapComponent";
 import { MapProvider } from "../components/mapbox/MapContext";
 import { LoadingComponent } from "../components/LoadingSpin";
@@ -38,7 +38,7 @@ const PlannerPage = () => {
             <MapProvider>
                 <div className="mainbody">
                     <div>
-                        <FriendInputComponent onSubmit={handleSubmit} loading={loading} />
+                        <PlannerInput onSubmit={handleSubmit} loading={loading} />
                     </div>
 
                     <div className="MapComponent">

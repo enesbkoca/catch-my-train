@@ -88,7 +88,7 @@ html, body {
   height: 40px;
 }
 
-.friend-input, .journey-result {
+.planner-input, .journey-result {
   position: absolute;
   left: 10px;
   margin: 90px auto 80px;
