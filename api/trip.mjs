@@ -9,9 +9,11 @@ const supabase = await createClient(process.env.SUPABASE_URL, process.env.NEXT_P
 export default async function handler(req, res) {
     if (req.method === 'POST') {
 
-        const { friends, meetingStation, datetime } = req.body;
+        const { friends, meetingOptions } = req.body;
+        console.log("Received Query Parameters:", { friends, meetingOptions});
 
-        console.log("Received Query Parameters:", { friends, meetingStation, datetime});
+        const meetingStation = meetingOptions.meetingStation;
+        const datetime = meetingOptions.datetime;
 
         if (!meetingStation || !datetime) {
             return res.status(400).json({ error: "Missing meetingStation or datetime query parameters." });
@@ -56,7 +58,10 @@ export default async function handler(req, res) {
 
         const { data, error } = await supabase
             .from('trips')
-            .insert({trip_information: tripInformation})
+            .insert({
+                trip_information: tripInformation,
+                meeting_options: meetingOptions
+            })
             .select()
             .single();
 

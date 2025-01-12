@@ -2,9 +2,6 @@ const computeJourney = async (friends, meetingOptions) => {
     console.log("Input Friends:", friends);
     console.log("Input Meeting Options:", meetingOptions);
 
-    const meetingStation = meetingOptions.meetingStation;
-    const datetime = meetingOptions.datetime.toISOString();
-
     try {
         const response = await fetch('/api/trip', {
             method: 'POST',
@@ -13,8 +10,7 @@ const computeJourney = async (friends, meetingOptions) => {
             },
             body: JSON.stringify({
                 friends: friends,
-                meetingStation: meetingStation,
-                datetime: datetime,
+                meetingOptions: meetingOptions,
             })
         });
 

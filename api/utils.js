@@ -1,4 +1,3 @@
-const {waitUntil} = require("@vercel/functions");
 const filterTripData = (item) => ({
     idx: item.idx,
     legs: item.legs.map(leg => ({
@@ -15,7 +14,6 @@ const addDepartureArrivalInfo = (trip) => {
 
     const departureTime = trip.legs[0].origin.plannedDateTime;
     const arrivalTime = trip.legs[nLegs - 1].destination.plannedDateTime;
-
 
     return {
         tripDepartureTime: departureTime,

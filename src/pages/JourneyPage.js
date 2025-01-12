@@ -11,15 +11,16 @@ const JourneyPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    const [journeyResults, setJourneyResults] = useState(location.state?.journeyResults || null);
+    const [meetingOptions, setMeetingOptions] = useState(location.state?.journeyResults.meetingOptions);
+    const [tripInformation, setTripInformation] = useState(location.state?.journeyResults || null);
     const [isRedirecting, setIsRedirecting] = useState(false);
-    const [isLoading, setIsLoading] = useState(!journeyResults);
+    const [isLoading, setIsLoading] = useState(!tripInformation);
 
 
 
     useEffect(() => {
         const fetchData = async () => {
-            if (!journeyResults) {
+            if (!tripInformation) {
                 try {
                     setIsLoading(true);
                     const response = await fetch(`/api/trip?tripId=${id}`);
@@ -32,7 +33,8 @@ const JourneyPage = () => {
                     }
                     const data = await response.json();
                     console.log("Fetched journey data:", data);
-                    setJourneyResults(data.data.trip_information);
+                    setTripInformation(data.data.trip_information);
+                    setMeetingOptions(data.data.meeting_options);
                 } catch (error) {
                     console.error("Error fetching journey data:", error);
                     setIsRedirecting(true);
@@ -47,14 +49,14 @@ const JourneyPage = () => {
         };
 
         fetchData();
-    }, [journeyResults, navigate, id]);
+    }, [tripInformation, meetingOptions, navigate, id]);
 
     return (
         <div>
             <MapProvider>
                 <div className="mainbody">
-                    {journeyResults ? (
-                        <JourneyResultComponent journeyResult={journeyResults} />
+                    {tripInformation ? (
+                        <JourneyResultComponent tripInformation={tripInformation} meetingOptions={meetingOptions} />
                     ) : isLoading ? (
                         <LoadingComponent message="Loading journey..." />
                     ) : isRedirecting ? (
