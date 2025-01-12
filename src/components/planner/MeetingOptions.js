@@ -7,7 +7,6 @@ const MeetingOptions = ({ meetingOptions, setMeetingOptions, stations }) => (
         <HStack spacing={3} justify="space-between">
             <Text fontWeight="bold">Meeting Station</Text>
             <Text fontWeight="bold">Date & Time</Text>
-            <Text fontWeight="bold">Duration</Text>
         </HStack>
         <HStack spacing={3}>
             <Select
@@ -21,13 +20,6 @@ const MeetingOptions = ({ meetingOptions, setMeetingOptions, stations }) => (
                 type="datetime-local"
                 value={adjustToLocalTime(meetingOptions.datetime)}
                 onChange={(e) => handleMeetingChange("datetime", new Date(e.target.value), meetingOptions, setMeetingOptions)}
-                variant="filled"
-                size="md"
-            />
-            <Input
-                type="time"
-                value={meetingOptions.duration}
-                onChange={(e) => handleMeetingChange("duration", e.target.value, meetingOptions, setMeetingOptions)}
                 variant="filled"
                 size="md"
             />
