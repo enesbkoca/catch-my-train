@@ -11,8 +11,9 @@ const JourneyPage = () => {
     const navigate = useNavigate();
     const { id } = useParams();
 
-    const [meetingOptions, setMeetingOptions] = useState(location.state?.journeyResults.meetingOptions);
-    const [tripInformation, setTripInformation] = useState(location.state?.journeyResults || null);
+    const [meetingOptions, setMeetingOptions] = useState(location.state?.journeyResults.meetingOptions || null);
+    const [tripInformation, setTripInformation] = useState(location.state?.journeyResults.tripInformation || null);
+
     const [isRedirecting, setIsRedirecting] = useState(false);
     const [isLoading, setIsLoading] = useState(!tripInformation);
 
@@ -33,8 +34,10 @@ const JourneyPage = () => {
                     }
                     const data = await response.json();
                     console.log("Fetched journey data:", data);
+
                     setTripInformation(data.data.trip_information);
                     setMeetingOptions(data.data.meeting_options);
+
                 } catch (error) {
                     console.error("Error fetching journey data:", error);
                     setIsRedirecting(true);

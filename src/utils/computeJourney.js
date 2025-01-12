@@ -1,5 +1,5 @@
-const computeJourney = async (friends, meetingOptions) => {
-    console.log("Input Friends:", friends);
+const computeJourney = async (tripInformation, meetingOptions) => {
+    console.log("Input Trip Information:", tripInformation);
     console.log("Input Meeting Options:", meetingOptions);
 
     try {
@@ -9,7 +9,7 @@ const computeJourney = async (friends, meetingOptions) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                friends: friends,
+                tripInformation: tripInformation,
                 meetingOptions: meetingOptions,
             })
         });
@@ -17,7 +17,7 @@ const computeJourney = async (friends, meetingOptions) => {
         const updatedFriends = await response.json();
 
         return {
-            friends: updatedFriends.data.trip_information,
+            tripInformation: updatedFriends.data.trip_information,
             meetingOptions: meetingOptions,
             tripId: updatedFriends.data.trip_id
         }

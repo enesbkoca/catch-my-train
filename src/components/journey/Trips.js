@@ -3,17 +3,18 @@ import React from "react";
 import {FaArrowRight} from "react-icons/fa";
 import {getColorByFriendId, iso8601ToLocalTime} from "../../utils/helperFunctions";
 
-export const FriendRides = ({friends}) => {
+export const Trips = ({ tripInformation }) => {
+
     return(<VStack spacing={3} align="stretch">
-                {friends.map((friend, index) => (
+                {tripInformation.map((trip, index) => (
                     <Box
                         key={index}
                         p={4}
                         borderWidth="1px"
                         borderRadius="md"
                         boxShadow="md"
-                        backgroundColor={getColorByFriendId(friend.friend_id, true)}
-                        _hover={{ backgroundColor: getColorByFriendId(friend.friend_id, true) + '.100', boxShadow: "lg" }}
+                        backgroundColor={getColorByFriendId(trip.friend_id, true)}
+                        _hover={{ backgroundColor: getColorByFriendId(trip.friend_id, true) + '.100', boxShadow: "lg" }}
                         transition="all 0.2s"
                     >
                         <Text
@@ -21,14 +22,14 @@ export const FriendRides = ({friends}) => {
                             margin={0}
                             fontWeight="bold"
                             align="center"
-                            color={getColorByFriendId(friend.friend_id) + '.800'}>
-                            {friend.name}
+                            color={getColorByFriendId(trip.friend_id) + '.800'}>
+                            {trip.name}
                         </Text>
                         <Divider my={2} margin={1} />
 
-                        {/* Render the rides for each friend */}
+                        {/* Render the rides for each trip */}
 
-                        <RenderRides align="center" trips={friend.trips} optimumTripIdx={friend.optimumTripIdx} />
+                        <RenderRides align="center" trips={trip.trips} optimumTripIdx={trip.optimumTripIdx} />
                     </Box>
                 ))}
             </VStack>)

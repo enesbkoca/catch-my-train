@@ -9,23 +9,23 @@ const supabase = await createClient(process.env.SUPABASE_URL, process.env.NEXT_P
 export default async function handler(req, res) {
     if (req.method === 'POST') {
 
-        const { friends, meetingOptions } = req.body;
-        console.log("Received Query Parameters:", { friends, meetingOptions});
+        const { tripInformation, meetingOptions } = req.body;
+        console.log("Received Query Parameters:", { tripInformation, meetingOptions});
 
         const meetingStation = meetingOptions.meetingStation;
         const datetime = meetingOptions.datetime;
 
         if (!meetingStation || !datetime) {
-            return res.status(400).json({ error: "Missing meetingStation or datetime query parameters." });
+            return res.status(400).json({ error: "Missing meetingStation or datetime attributes." });
         }
 
-        for (const friend of friends) {
+        for (const trip of tripInformation) {
 
-            if (!friend.station) {
-                return res.status(400).json({ error: "Missing friend.station query parameter." });
+            if (!trip.station) {
+                return res.status(400).json({ error: "Missing trip.station query parameter." });
             }
 
-            const fromStation = friend.station;
+            const fromStation = trip.station;
 
             const apiUrl = generateNSUrl( fromStation, meetingStation, datetime );
 
@@ -45,7 +45,7 @@ export default async function handler(req, res) {
                 const filteredTrips = tripData.map(item => filterTripData(item));
                 const enrichedTrips = filteredTrips.map(item => addDepartureArrivalInfo(item));
 
-                friend.trips = enrichedTrips;
+                trip.trips = enrichedTrips;
 
             } catch (error) {
                 console.error("Proxy error:", error.stack);
@@ -54,12 +54,12 @@ export default async function handler(req, res) {
 
         }
 
-        const tripInformation = findOptimumTripIdx(friends);
+        const optimumTripInformation = findOptimumTripIdx(tripInformation);
 
         const { data, error } = await supabase
             .from('trips')
             .insert({
-                trip_information: tripInformation,
+                trip_information: optimumTripInformation,
                 meeting_options: meetingOptions
             })
             .select()
