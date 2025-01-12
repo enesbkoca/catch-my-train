@@ -24,7 +24,7 @@ const PlannerInput = ({ onSubmit }) => {
 
     useEffect(() => {
         updateFriendInputMarkers(friends, stations, markers, addMarker, removeMarker, updateMarker);
-    }, [friends, stations, markers, addMarker, removeMarker, updateMarker]);
+    }, [friends, stations]);
 
     useEffect(() => {
         console.log("Markers have been updated: ", markers);
