@@ -1,17 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { Text } from '@chakra-ui/react';
+
 import { MapContext } from '../mapbox/MapContext';
 import { updateJourneyMarkers } from "../../utils/helperFunctions";
-import { FriendRides } from "./FriendRides";
-import {MeetingDetails} from "./MeetingDetails";
+import { Trips } from "./Trips";
+import { MeetingDetails } from "./MeetingDetails";
 
-const JourneyResultComponent = ({ journeyResult }) => {
+const JourneyResultComponent = ({ tripInformation, meetingOptions }) => {
     const { markers, addMarker, stations, polylines, addPolyline, removeAllMapArtifacts } = useContext(MapContext);
 
     useEffect(() => {
-        updateJourneyMarkers(journeyResult, stations, addMarker, markers, addPolyline, removeAllMapArtifacts);
+        updateJourneyMarkers(tripInformation, meetingOptions, stations, addMarker, markers, addPolyline, removeAllMapArtifacts);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [journeyResult, stations]);
+        }, [tripInformation, meetingOptions, stations]);
 
     useEffect(() => {
         console.log(polylines);
@@ -23,9 +24,9 @@ const JourneyResultComponent = ({ journeyResult }) => {
                 Your Journey Plan
             </Text>
 
-            <MeetingDetails meetingOptions={journeyResult.meetingOptions}/>
+            <MeetingDetails meetingOptions={meetingOptions}/>
 
-            <FriendRides friends={journeyResult.friends}/>
+            <Trips tripInformation={tripInformation}/>
         </div>
     );
 };

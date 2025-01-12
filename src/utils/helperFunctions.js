@@ -30,7 +30,7 @@ export const getCoordinates = (station_name, stations) => {
     // Check if the station is found
     if (station) {
         console.log("Found station with: " + JSON.stringify(station));
-        return station.coordinates;
+        return [station.coordinates.lat, station.coordinates.lng];
     } else {
         // Log a message if default coordinates are used
         console.warn(`Station "${station_name}" not found. Using default coordinates:`, coordinatesNetherlands);
@@ -131,20 +131,20 @@ export const getColorByFriendId = (friend_id, background = false) => {
     return background ? backgroundColor : markerColor;
 };
 
-export const updateJourneyMarkers = (journeyResult, stations, addMarker, markers, addPolyline, removeAllMapArtifacts) => {
+export const updateJourneyMarkers = (tripInformation, meetingOptions, stations, addMarker, markers, addPolyline, removeAllMapArtifacts) => {
     // Clear all existing map artifacts, including markers and polylines
     removeAllMapArtifacts();
 
 
 
     // Add marker for meeting point
-    const meetingPosition = getCoordinates(journeyResult.meetingOptions.meetingStation, stations);
+    const meetingPosition = getCoordinates(meetingOptions.meetingStation, stations);
     addMarker({
-        station_name: journeyResult.meetingOptions.meetingStation,
+        station_name: meetingOptions.meetingStation,
         position: meetingPosition
     }, "gold");
 
-    journeyResult.friends.forEach(friend => {
+    tripInformation.forEach(friend => {
         const optimumTrip = friend.trips.find(trip => trip.idx === friend.optimumTripIdx);
         const tripPositions = []; // Track each friend’s journey positions
 

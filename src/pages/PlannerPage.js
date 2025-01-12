@@ -1,24 +1,31 @@
 import React, {useState} from 'react';
-import FriendInputComponent from "../components/planner/FriendInputComponent";
-import MapComponent from "../components/mapbox/MapComponent";
-import {MapProvider} from "../components/mapbox/MapContext";
 import {useNavigate} from "react-router-dom";
+
+import PlannerInput from "../components/planner/PlannerInput";
+import MapComponent from "../components/mapbox/MapComponent";
+import { MapProvider } from "../components/mapbox/MapContext";
+import { LoadingComponent } from "../components/LoadingSpin";
+
 import computeJourney from "../utils/computeJourney";
-import {LoadingComponent} from "../components/LoadingSpin";
 
 const PlannerPage = () => {
     const [loading, setLoading] = useState(false); // State to track loading
     const navigate = useNavigate(); // Use the navigate hook
 
-    const handleSubmit = async (friends, meetingOptions) => {
+    const handleSubmit = async (tripInformation, meetingOptions) => {
         setLoading(true); // Set loading to true before submission
         try {
             // Await the async computeJourney function
-            const journeyResults = await computeJourney(friends, meetingOptions);
+            const journeyResults = await computeJourney(tripInformation, meetingOptions);
             await new Promise(resolve => setTimeout(resolve, 1500));
 
+            const tripId = journeyResults.tripId;
+
+            console.log('Journey Results:', journeyResults);
+
             // Navigate to the '/journey' page and pass the journey results
-            navigate('/journey', { state: { journeyResults } });
+            navigate(`/journey/${tripId}`, { state: { journeyResults } });
+
         } catch (error) {
             console.error('Error during journey computation:', error);
         } finally {
@@ -31,7 +38,7 @@ const PlannerPage = () => {
             <MapProvider>
                 <div className="mainbody">
                     <div>
-                        <FriendInputComponent onSubmit={handleSubmit} loading={loading} />
+                        <PlannerInput onSubmit={handleSubmit} loading={loading} />
                     </div>
 
                     <div className="MapComponent">

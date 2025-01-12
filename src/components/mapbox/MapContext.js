@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
-import GetStations from "../../utils/fetchStations";
+import getStations from "../../utils/fetchStations";
 import {getColorByFriendId} from "../../utils/helperFunctions";
 
 export const MapContext = createContext();
@@ -12,12 +12,17 @@ export const MapProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchStations = async () => {
-            const stationsData = await GetStations();
+            const stationsData = await getStations();
+            console.log({message: "Received results from getStations", result: stationsData})
             setStations(stationsData);
         };
 
         fetchStations();
     }, []);
+
+    useEffect(() => {
+        console.log(`Updated stations state:`, stations);
+    }, [stations]);
 
     const removeAllMapArtifacts = () => {
         setPolylines([]);

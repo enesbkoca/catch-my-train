@@ -1,33 +1,30 @@
-import GetStations from "./fetchStations";
-import mockComputeJourney from "./mockComputeJourney";
-import {createTrip, findOptimumTripIdx} from "./tripResponseUtils";
+const computeJourney = async (tripInformation, meetingOptions) => {
+    console.log("Input Trip Information:", tripInformation);
+    console.log("Input Meeting Options:", meetingOptions);
 
-const computeJourney = async (friends, meetingOptions, mock = false) => {
-    console.log("Input Friends:", friends);
-    console.log("Input Meeting Options:", meetingOptions)   ;
+    try {
+        const response = await fetch('/api/trip', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tripInformation: tripInformation,
+                meetingOptions: meetingOptions,
+            })
+        });
 
-    if (mock) {
-        return mockComputeJourney(friends, meetingOptions);
+        const updatedFriends = await response.json();
+
+        return {
+            tripInformation: updatedFriends.data.trip_information,
+            meetingOptions: meetingOptions,
+            tripId: updatedFriends.data.trip_id
+        }
+
+    } catch (error) {
+        console.error(`Failed to fetch trips: ${error.message}`)
     }
-
-    const allStations = await GetStations();
-
-    // Map station code to name for convenience
-    // const stationMap = Object.fromEntries(allStations.map((station) => [station.code, station.name]));
-    const reverseStationMap = Object.fromEntries(allStations.map((station) => [station.name, station.code]));
-
-    const datetime = meetingOptions.datetime.toISOString();
-
-    // Add trip information
-    friends = await createTrip(friends, meetingOptions.meetingStation, datetime, reverseStationMap);
-
-    friends = findOptimumTripIdx(friends);
-
-    console.log("friends after computeJourney: ", friends);
-    console.log("meetingOptions after computeJourney: ", meetingOptions);
-
-    // Return the updated objects
-    return {friends: friends, meetingOptions: meetingOptions};
 };
 
 export default computeJourney;

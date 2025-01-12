@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@vercel/functions": "^1.5.2",
     "framer-motion": "^11.11.8",
     "leaflet": "^1.9.4",
     "leaflet-curve": "^1.0.0",
@@ -21,6 +22,7 @@
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
+    "react-select": "^5.9.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
